@@ -1,31 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Dropzone from "react-dropzone";
-import { Rnd, RndDragCallback, RndResizeCallback } from "react-rnd";
+import { Rnd } from "react-rnd";
+import Canvas from "./components/Canvas";
+import ControlPanel from "./components/ControlPanel";
+import { fitImageToCanvas, downloadImage } from "./utils/imageUtils";
 import "./App.css";
 
-interface Shape {
+interface ShapeData {
   type: string;
   position: { x: number; y: number };
   size: { width: number; height: number };
   style: {
     borderColor: string;
+    borderWidth: number;
     fillColor: string;
     backdrop: boolean;
     transparency: boolean;
+    textColor: string;
+    textSize: number;
   };
   text: string;
 }
 
 function App() {
   const [image, setImage] = useState<string | null>(null);
-  const [shapes, setShapes] = useState<Shape[]>([]);
+  const [shapes, setShapes] = useState<ShapeData[]>([]);
   const [activeShape, setActiveShape] = useState<number | null>(null);
-  const [shapeType, setShapeType] = useState<string>("rectangle");
-  const [borderColor, setBorderColor] = useState<string>("#000000");
-  const [fillColor, setFillColor] = useState<string>("#000000");
-  const [backdrop, setBackdrop] = useState<boolean>(false);
-  const [transparency, setTransparency] = useState<boolean>(false);
-  const [text, setText] = useState<string>("");
+  const [borderColor, setBorderColor] = useState("#000000");
+  const [borderWidth, setBorderWidth] = useState(1);
+  const [fillColor, setFillColor] = useState("#FFFFFF");
+  const [backdrop, setBackdrop] = useState(false);
+  const [transparency, setTransparency] = useState(false);
+  const [textColor, setTextColor] = useState("#000000");
+  const [textSize, setTextSize] = useState(12);
+  const [text, setText] = useState("");
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const shapeRefs = useRef<Array<Rnd | null>>([]);
 
   const handleDrop = (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -49,150 +59,133 @@ function App() {
   };
 
   const handleDownload = () => {
-    // Logic to download the modified image as PNG or WebP
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+
+      if (context && image) {
+        const img = new Image();
+        img.src = image;
+
+        img.onload = () => {
+          const { newWidth, newHeight, offsetX, offsetY } = fitImageToCanvas(
+            canvas,
+            img
+          );
+
+          canvas.width = newWidth;
+          canvas.height = newHeight;
+
+          // Draw the image on the canvas
+          context.drawImage(img, offsetX, offsetY, newWidth, newHeight);
+
+          // Draw the shapes on the canvas
+          shapes.forEach((shape) => {
+            const { type, position, size, style, text } = shape;
+
+            context.beginPath();
+
+            switch (type) {
+              case "rectangle":
+                context.rect(position.x, position.y, size.width, size.height);
+                break;
+              case "arrow":
+                // Draw arrow shape
+                break;
+              case "square":
+                // Draw square shape
+                break;
+              case "circle":
+                // Draw circle shape
+                break;
+              case "ellipse":
+                // Draw ellipse shape
+                break;
+              case "rounded-rectangle":
+                // Draw rounded rectangle shape
+                break;
+              default:
+                break;
+            }
+
+            context.strokeStyle = style.borderColor;
+            context.lineWidth = style.borderWidth;
+            context.fillStyle = style.fillColor;
+
+            if (style.backdrop) {
+              context.shadowColor = style.borderColor;
+              context.shadowBlur = 5;
+            }
+
+            if (style.transparency) {
+              context.globalAlpha = 0.5;
+            }
+
+            context.fill();
+            context.stroke();
+
+            if (text) {
+              context.font = `${style.textSize}px Arial`;
+              context.fillStyle = style.textColor;
+              context.fillText(text, position.x + 10, position.y + 30);
+            }
+          });
+
+          // Download the canvas as an image file
+          downloadImage(canvas);
+        };
+      }
+    }
   };
 
-  const handleBorderColorChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+  const handleShapeAdd = () => {
+    const defaultShape: ShapeData = {
+      type: "rectangle",
+      position: { x: 100, y: 100 },
+      size: { width: 100, height: 50 },
+      style: {
+        borderColor,
+        borderWidth,
+        fillColor,
+        backdrop,
+        transparency,
+        textColor,
+        textSize,
+      },
+      text,
+    };
+
+    setShapes([...shapes, defaultShape]);
+  };
+
+  const handleShapeResize = (
+    index: number,
+    direction: string,
+    ref: Rnd | null,
+    delta: { width: number; height: number },
+    position: { x: number; y: number }
   ) => {
-    setBorderColor(event.target.value);
-  };
-
-  const handleFillColorChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFillColor(event.target.value);
-  };
-
-  const handleBackdropChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBackdrop(event.target.checked);
-  };
-
-  const handleTransparencyChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setTransparency(event.target.checked);
-  };
-
-  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setText(event.target.value);
-  };
-
-  const handleShapeTypeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setShapeType(event.target.value);
-  };
-
-  const handleShapeResize: RndResizeCallback = (
-    e,
-    direction,
-    ref,
-    delta,
-    position
-  ) => {
-    if (
-      typeof ref.style.width === "string" &&
-      typeof ref.style.height === "string"
-    ) {
-      const width = parseInt(ref.style.width);
-      const height = parseInt(ref.style.height);
+    if (ref) {
+      const { width, height } = ref.style;
       const updatedShapes = [...shapes];
-      updatedShapes[index].size = { width, height };
+      updatedShapes[index].size = {
+        width: parseInt(width),
+        height: parseInt(height),
+      };
       setShapes(updatedShapes);
     }
   };
 
-  const handleShapeDrag: RndDragCallback = (e, d) => {
-    const updatedShapes = [...shapes];
-    updatedShapes[index].position = { x: d.x, y: d.y };
-    setShapes(updatedShapes);
+  const handleShapeDragStart = (index: number) => {
+    setActiveShape(index);
   };
 
-  const handleCanvasClick = () => {
+  const handleShapeDragStop = () => {
     setActiveShape(null);
   };
 
-  const handleShapeAdd = (event: React.FormEvent) => {
-    event.preventDefault();
-    setShapes([
-      ...shapes,
-      {
-        type: shapeType,
-        position: { x: 0, y: 0 },
-        size: { width: 100, height: 100 },
-        style: {
-          borderColor,
-          fillColor,
-          backdrop,
-          transparency,
-        },
-        text,
-      },
-    ]);
-    setText("");
-  };
-
-  const renderShape = (shape: Shape, index: number) => {
-    const { type, position, size, style, text } = shape;
-
-    let shapeClassName = "";
-    switch (type) {
-      case "rectangle":
-        shapeClassName = "shape-rectangle";
-        break;
-      case "arrow":
-        shapeClassName = "shape-arrow";
-        break;
-      case "square":
-        shapeClassName = "shape-square";
-        break;
-      case "circle":
-        shapeClassName = "shape-circle";
-        break;
-      case "ellipse":
-        shapeClassName = "shape-ellipse";
-        break;
-      case "rounded-rectangle":
-        shapeClassName = "shape-rounded-rectangle";
-        break;
-      default:
-        shapeClassName = "";
-    }
-
-    return (
-      <Rnd
-        key={index}
-        size={{ width: size.width, height: size.height }}
-        position={{ x: position.x, y: position.y }}
-        onResize={handleShapeResize}
-        onDragStop={handleShapeDrag}
-        bounds="parent"
-        className={`shape ${shapeClassName} ${
-          activeShape === index ? "active" : ""
-        }`}
-      >
-        <div
-          className="shape-content"
-          style={{
-            borderColor: style.borderColor,
-            backgroundColor: style.fillColor,
-            backdropFilter: style.backdrop ? "blur(5px)" : "none",
-            opacity: style.transparency ? "0.5" : "1",
-          }}
-          onClick={() => handleShapeClick(index)}
-        >
-          {text && <p className="shape-text">{text}</p>}
-        </div>
-        <div className="shape-delete" onClick={() => handleShapeDelete(index)}>
-          X
-        </div>
-      </Rnd>
-    );
-  };
-
   return (
-    <div className="container mx-auto p-4">
+    <div className="container bg-yellow-50 mx-auto p-4">
       <h1 className="text-2xl mb-4">Upload an image</h1>
       <div className="dropzone-container mb-8">
         <Dropzone onDrop={handleDrop}>
@@ -208,92 +201,45 @@ function App() {
         </Dropzone>
       </div>
 
-      {image && (
-        <div>
-          <h2 className="text-2xl mb-4">Modify the image</h2>
-          <div className="options mb-8">
-            <label className="mr-4">
-              Shape Type:{" "}
-              <select
-                value={shapeType}
-                onChange={handleShapeTypeChange}
-                className="border border-gray-300 rounded px-2 py-1"
-              >
-                <option value="rectangle">Rectangle</option>
-                <option value="arrow">Arrow</option>
-                <option value="square">Square</option>
-                <option value="circle">Circle</option>
-                <option value="ellipse">Ellipse</option>
-                <option value="rounded-rectangle">Rounded Rectangle</option>
-              </select>
-            </label>
-            <label className="mr-4">
-              Border Color:{" "}
-              <input
-                type="text"
-                value={borderColor}
-                onChange={handleBorderColorChange}
-                className="border border-gray-300 rounded px-2 py-1"
-              />
-            </label>
-            <label>
-              Fill Color:{" "}
-              <input
-                type="text"
-                value={fillColor}
-                onChange={handleFillColorChange}
-                className="border border-gray-300 rounded px-2 py-1"
-              />
-            </label>
-            <label className="mr-4">
-              Backdrop:{" "}
-              <input
-                type="checkbox"
-                checked={backdrop}
-                onChange={handleBackdropChange}
-              />
-            </label>
-            <label>
-              Transparency:{" "}
-              <input
-                type="checkbox"
-                checked={transparency}
-                onChange={handleTransparencyChange}
-              />
-            </label>
-            <br />
-            <label className="mt-4">
-              Text:{" "}
-              <input
-                type="text"
-                value={text}
-                onChange={handleTextChange}
-                className="border border-gray-300 rounded px-2 py-1"
-              />
-            </label>
-            <button
-              type="button"
-              className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mt-4"
-              onClick={handleShapeAdd}
-            >
-              Add Shape
-            </button>
-          </div>
+      {image ? (
+        <div className="flex">
+          <Canvas
+            image={image}
+            shapes={shapes}
+            activeShape={activeShape}
+            canvasRef={canvasRef}
+            shapeRefs={shapeRefs}
+            onShapeClick={handleShapeClick}
+            onShapeDelete={handleShapeDelete}
+            onShapeResize={handleShapeResize}
+            onShapeDragStart={handleShapeDragStart}
+            onShapeDragStop={handleShapeDragStop}
+          />
 
-          <div className="canvas" onClick={handleCanvasClick}>
-            <img src={image} alt="Uploaded Screenshot" />
-            {shapes.map(renderShape)}
-          </div>
-
-          <button
-            type="button"
-            className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mt-4"
-            onClick={handleDownload}
-          >
-            Download
-          </button>
+          <ControlPanel
+            borderColor={borderColor}
+            borderWidth={borderWidth}
+            fillColor={fillColor}
+            backdrop={backdrop}
+            transparency={transparency}
+            textColor={textColor}
+            textSize={textSize}
+            text={text}
+            onBorderColorChange={(e) => setBorderColor(e.target.value)}
+            onBorderWidthChange={(e) =>
+              setBorderWidth(parseInt(e.target.value))
+            }
+            onFillColorChange={(e) => setFillColor(e.target.value)}
+            onBackdropChange={(e) => setBackdrop(e.target.checked)}
+            onTransparencyChange={(e) => setTransparency(e.target.checked)}
+            onTextColorChange={(e) => setTextColor(e.target.value)}
+            onTextSizeChange={(e) => setTextSize(parseInt(e.target.value))}
+            onTextChange={(e) => setText(e.target.value)}
+            onShapeAdd={handleShapeAdd}
+            onDownload={handleDownload}
+          />
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
