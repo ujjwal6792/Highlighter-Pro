@@ -1,30 +1,66 @@
 import { Rnd } from "react-rnd";
-const ShapesHandler = (props) => {
+import { twMerge } from "tailwind-merge";
+enum textPosition {
+  top = "top",
+  bottom = "bottom",
+  left = "left",
+  right = "right",
+  topRight = "top-right",
+  topLeft = "top-left",
+  bottomRight = "bottom-right",
+  bottomLeft = "bottom-left",
+}
+enum type {
+  rect,
+  circle,
+  square,
+  arrow,
+  triangle,
+}
+interface proptypes {
+  type: type;
+  text: string;
+  textPosition: textPosition;
+  className: string;
+  borderWidth: number;
+  borderColor: string;
+  borderRadius: number;
+  width: number;
+  height: number;
+  fillColor: string;
+}
+
+const ShapesHandler = (props: proptypes) => {
   const {
     type,
+    text,
+    textPosition,
     className,
     borderWidth,
     borderColor,
+    borderRadius,
     width,
     height,
     fillColor,
   } = props;
 
-  const generateClassName = () => {
-    console.log("doll");
-  };
+  const shapeClassName = twMerge(
+    "justify-center items-center border border-black",
+    ""
+  );
 
   return (
     <Rnd
-      className={`flex items-center justify-center border border-black bg-transparent`}
+      style={{ display: "flex" }}
+      className={shapeClassName}
       default={{
-        x: 0,
-        y: 0,
-        width: 320,
-        height: 200,
+        x: 100,
+        y: 100,
+        width: width || 320,
+        height: height || 200,
       }}
     >
-      Rnd
+      <span className={textPosition}>{text}</span>
     </Rnd>
   );
 };
