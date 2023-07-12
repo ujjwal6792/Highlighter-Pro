@@ -21,7 +21,7 @@ const ImageUploader: React.FC = () => {
   return (
     <div
       {...getRootProps()}
-      className={`px-4 py-2 m-4 cursor-pointer rounded-md border border-slate-700 ${
+      className={`px-4 py-2 cursor-pointer rounded-md border border-slate-700 ${
         isDragActive ? "active" : ""
       }`}
     >

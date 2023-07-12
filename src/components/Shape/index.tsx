@@ -4,7 +4,9 @@ import { useState } from "react";
 import { Circle, Rectangle, Square } from "../../assets/shapesJsx";
 import { useShapeStore } from "../../store";
 const ShapesHandler = () => {
-  const {  type,
+  const { shape } = useShapeStore();
+  const {
+    type,
     dimension,
     borderColor,
     borderWidth,
@@ -12,10 +14,11 @@ const ShapesHandler = () => {
     fillColor,
     textPosition,
     borderStyle,
-    text} = useShapeStore()
+    text,
+  } = shape;
   const [size, setSize] = useState<objectSize>({
     width: dimension || 200,
-    height: dimension || 200 ,
+    height: dimension || 200,
   });
 
   const handleResize = (
@@ -23,8 +26,8 @@ const ShapesHandler = () => {
     a: string,
     ref: HTMLElement
   ) => {
-    const width = parseInt(ref.style.width.trim().replace("px", "")) -20 ;
-    const height = parseInt(ref.style.height.trim().replace("px", "")) -20 ;
+    const width = parseInt(ref.style.width.trim().replace("px", "")) - 20;
+    const height = parseInt(ref.style.height.trim().replace("px", "")) - 20;
 
     setSize({
       width,
@@ -37,12 +40,12 @@ const ShapesHandler = () => {
     <div className="">
       <Rnd
         style={{ display: "flex" }}
-        className='justify-center items-center hover:border-[1.5px] border-dashed border-black rounded-md'
+        className={`justify-center items-center hover:border-[1.5px] border-dashed border-black rounded-md`}
         default={{
           x: 100,
           y: 100,
-          width: size.width + 20 || 200,
-          height: type === "rect" ? size.width + 20 || (150 / 1.5) + 20 : size.height + 20 || 200,
+          width: size.width + 20,
+          height: type === "rect" ? size.height / 1.5 : size.height,
         }}
         enableResizing={{
           top: type === "rect",
@@ -59,8 +62,8 @@ const ShapesHandler = () => {
       >
         {type === "square" ? (
           <Square
-            height={Number(size.width) }
-            width={Number(size.width) }
+            height={Number(size.width)}
+            width={Number(size.width)}
             borderColor={borderColor}
             fillColor={fillColor}
             borderWidth={borderWidth}
@@ -69,12 +72,12 @@ const ShapesHandler = () => {
           />
         ) : type === "circle" ? (
           <Circle
-            height={Number(size.height) }
-            width={Number(size.width) }
+            height={Number(size.height)}
+            width={Number(size.width)}
             borderColor={borderColor}
             fillColor={fillColor}
             borderWidth={borderWidth}
-            borderRadius={borderRadius}
+            borderRadius={"50%"}
             borderStyle={borderStyle}
           />
         ) : (
@@ -86,7 +89,9 @@ const ShapesHandler = () => {
             borderStyle={borderStyle}
           />
         )}
-        {text !== undefined && text?.length>0 && <span className={textPosition}>{text}</span>}
+        {text !== undefined && text?.length > 0 && (
+          <span className={textPosition}>{text}</span>
+        )}
       </Rnd>
     </div>
   );
