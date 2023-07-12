@@ -1,4 +1,4 @@
-export enum textPositionEnum {
+export enum TextPositionEnum {
   top = "top",
   bottom = "bottom",
   left = "left",
@@ -8,23 +8,31 @@ export enum textPositionEnum {
   bottomRight = "bottom-right",
   bottomLeft = "bottom-left",
 }
-export enum typeEnum {
+export enum TypeEnum {
   rect = "rect",
   circle = "circle",
   square = "square",
   arrow = "arrow",
   triangle = "triangle",
 }
+export enum BorderStyleEnum {
+  None = "none",
+  Solid = "solid",
+  Dashed = "dashed",
+  Dotted = "dotted",
+  Double = "double",
+}
 export interface proptypes {
-  type: typeEnum;
+  type: TypeEnum;
   text?: string;
-  textPosition?: textPositionEnum;
+  textPosition?: TextPositionEnum;
   className?: string;
-  borderWidth?: number;
-  borderColor?: string;
-  borderRadius?: number;
-  fillColor?: string;
-  dimension?: number;
+  borderWidth: string;
+  borderColor: string;
+  borderRadius: string;
+  borderStyle: BorderStyleEnum;
+  fillColor: string;
+  dimension: number;
 }
 
 export interface objectSize {

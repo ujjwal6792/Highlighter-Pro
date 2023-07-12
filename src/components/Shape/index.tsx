@@ -12,6 +12,7 @@ const ShapesHandler = (props: proptypes) => {
     borderWidth,
     borderColor,
     borderRadius,
+    borderStyle,
     dimension,
     fillColor,
   } = props;
@@ -67,26 +68,29 @@ const ShapesHandler = (props: proptypes) => {
           <Square
             height={Number(size.width) - 10}
             width={Number(size.width) - 10}
-            borderColor={borderColor || ""}
-            fillColor={fillColor || ""}
-            borderWidth="10px"
-            borderRadius="0%"
-            borderStyle="dashed"
+            borderColor={borderColor}
+            fillColor={fillColor}
+            borderWidth={borderWidth}
+            borderRadius={borderRadius}
+            borderStyle={borderStyle}
           />
         ) : type === "circle" ? (
           <Circle
             height={Number(size.height) || 200 - 10}
             width={Number(size.width) - 10}
-            borderColor={borderColor || ""}
-            borderWidth="10px"
-            borderRadius="50%"
-            borderStyle="dashed"
-            fillColor={fillColor || "transparent"}
+            borderColor={borderColor}
+            fillColor={fillColor}
+            borderWidth={borderWidth}
+            borderRadius={borderRadius}
+            borderStyle={borderStyle}
           />
         ) : (
           <Rectangle
-            borderColor={borderColor || ""}
-            fillColor={fillColor || ""}
+            borderColor={borderColor}
+            fillColor={fillColor}
+            borderWidth={borderWidth}
+            borderRadius={borderRadius}
+            borderStyle={borderStyle}
           />
         )}
         <span className={textPosition}>{text}</span>
