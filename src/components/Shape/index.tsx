@@ -2,7 +2,7 @@ import { Rnd } from "react-rnd";
 import { twMerge } from "tailwind-merge";
 import { proptypes, objectSize } from "../../shapeTypes";
 import { useState } from "react";
-import { Rectangle, Square } from "../../assets/ShapesSvg";
+import { Circle, Rectangle, Square } from "../../assets/shapesJsx";
 const ShapesHandler = (props: proptypes) => {
   const {
     type,
@@ -48,33 +48,45 @@ const ShapesHandler = (props: proptypes) => {
           x: 100,
           y: 100,
           width: dimension || 200,
-          height: dimension || 200,
+          height: type === "rect" ? dimension || 150 / 1.5 : dimension || 200,
         }}
         enableResizing={{
-          top: false,
-          right: false,
-          bottom: false,
-          left: false,
+          top: type === "rect",
+          right: type === "rect",
+          bottom: type === "rect",
+          left: type === "rect",
           topRight: true,
           bottomRight: true,
           bottomLeft: true,
           topLeft: true,
         }}
-        lockAspectRatio={true}
+        lockAspectRatio={type === "rect" ? false : true}
         onResize={handleResize}
       >
         {type === "square" ? (
           <Square
-            size={Number(size.height) || 200 - 10}
-            borderColor="#000"
-            fillColor="transparent"
+            height={Number(size.width) - 10}
+            width={Number(size.width) - 10}
+            borderColor={borderColor || ""}
+            fillColor={fillColor || ""}
+            borderWidth="10px"
+            borderRadius="0%"
+            borderStyle="dashed"
+          />
+        ) : type === "circle" ? (
+          <Circle
+            height={Number(size.height) || 200 - 10}
+            width={Number(size.width) - 10}
+            borderColor={borderColor || ""}
+            borderWidth="10px"
+            borderRadius="50%"
+            borderStyle="dashed"
+            fillColor={fillColor || "transparent"}
           />
         ) : (
           <Rectangle
-            borderColor="#000"
-            fillColor="transparent"
-            height={Number(size.height) || 200 - 10}
-            width={Number(size.width) - 10}
+            borderColor={borderColor || ""}
+            fillColor={fillColor || ""}
           />
         )}
         <span className={textPosition}>{text}</span>

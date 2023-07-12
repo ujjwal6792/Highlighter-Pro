@@ -2,7 +2,7 @@ import ShapesHandler from "./components/Shape";
 import domtoimage from "dom-to-image";
 import FileSaver from "file-saver";
 import "./index.css";
-import { typeEnum } from "./shapeTypes";
+import { textPositionEnum, typeEnum } from "./shapeTypes";
 function App() {
   const downloadImage = async (): Promise<void> => {
     const imageNode: HTMLElement | null = document.getElementById("app");
@@ -19,7 +19,14 @@ function App() {
         id="app"
         className="h-screen w-screen bg-yellow-50 overflow-hidden overscroll-none"
       >
-        <ShapesHandler type={typeEnum.square} />
+        <ShapesHandler
+          type={typeEnum.square}
+          borderColor="#000000"
+          borderWidth={2}
+          borderRadius={5}
+          fillColor="transparent"
+          textPosition={textPositionEnum.top}
+        />
         <button onClick={downloadImage}>Download Image</button>
       </div>
     </>
