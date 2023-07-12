@@ -1,24 +1,22 @@
 import { Rnd } from "react-rnd";
 import { twMerge } from "tailwind-merge";
-import { proptypes, objectSize } from "../../shapeTypes";
+import { objectSize } from "../../shapeTypes";
 import { useState } from "react";
 import { Circle, Rectangle, Square } from "../../assets/shapesJsx";
-const ShapesHandler = (props: proptypes) => {
-  const {
-    type,
-    text,
-    textPosition,
-    className,
-    borderWidth,
-    borderColor,
-    borderRadius,
-    borderStyle,
+import { useShapeStore } from "../../store";
+const ShapesHandler = () => {
+  const {  type,
     dimension,
+    borderColor,
+    borderWidth,
+    borderRadius,
     fillColor,
-  } = props;
+    textPosition,
+    borderStyle,
+    text} = useShapeStore()
   const [size, setSize] = useState<objectSize>({
-    width: dimension || 200 - 10,
-    height: dimension || 200 - 10,
+    width: dimension || 200,
+    height: dimension || 200 ,
   });
 
   const shapeClassName = twMerge(
@@ -30,8 +28,8 @@ const ShapesHandler = (props: proptypes) => {
     a: string,
     ref: HTMLElement
   ) => {
-    const width = parseInt(ref.style.width.trim().replace("px", "")) - 10;
-    const height = parseInt(ref.style.height.trim().replace("px", "")) - 10;
+    const width = parseInt(ref.style.width.trim().replace("px", "")) ;
+    const height = parseInt(ref.style.height.trim().replace("px", "")) ;
 
     setSize({
       width,
@@ -39,7 +37,7 @@ const ShapesHandler = (props: proptypes) => {
     });
     [e, a];
   };
-  console.log(className, borderWidth, borderColor, borderRadius, fillColor);
+
   return (
     <div className="">
       <Rnd
@@ -48,8 +46,8 @@ const ShapesHandler = (props: proptypes) => {
         default={{
           x: 100,
           y: 100,
-          width: dimension || 200,
-          height: type === "rect" ? dimension || 150 / 1.5 : dimension || 200,
+          width: size.width + 20 || 200,
+          height: type === "rect" ? size.width || 150 / 1.5 : size.height || 200,
         }}
         enableResizing={{
           top: type === "rect",
@@ -66,8 +64,8 @@ const ShapesHandler = (props: proptypes) => {
       >
         {type === "square" ? (
           <Square
-            height={Number(size.width) - 10}
-            width={Number(size.width) - 10}
+            height={Number(size.width) }
+            width={Number(size.width) }
             borderColor={borderColor}
             fillColor={fillColor}
             borderWidth={borderWidth}
@@ -76,8 +74,8 @@ const ShapesHandler = (props: proptypes) => {
           />
         ) : type === "circle" ? (
           <Circle
-            height={Number(size.height) || 200 - 10}
-            width={Number(size.width) - 10}
+            height={Number(size.height) }
+            width={Number(size.width) }
             borderColor={borderColor}
             fillColor={fillColor}
             borderWidth={borderWidth}
@@ -93,7 +91,7 @@ const ShapesHandler = (props: proptypes) => {
             borderStyle={borderStyle}
           />
         )}
-        <span className={textPosition}>{text}</span>
+        {text !== undefined && text?.length>0 && <span className={textPosition}>{text}</span>}
       </Rnd>
     </div>
   );

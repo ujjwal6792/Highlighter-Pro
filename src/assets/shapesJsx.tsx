@@ -12,7 +12,6 @@ interface ShapeProps {
 
 const Square: React.FC<ShapeProps> = ({
   width = 100,
-  height = 100,
   fillColor = "transparent",
   borderWidth = "2px",
   borderColor = "black",
@@ -21,7 +20,7 @@ const Square: React.FC<ShapeProps> = ({
 }) => {
   const squareStyle = {
     width: width,
-    height: height,
+    aspectRatio: '1/1',
     backgroundColor: fillColor,
     borderWidth: borderWidth,
     borderColor: borderColor,
