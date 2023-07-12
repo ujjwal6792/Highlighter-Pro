@@ -27,10 +27,6 @@ export interface proptypes {
   dimension?: number;
 }
 
-export interface classnameObject {
-  type: string;
-}
-
 export interface objectSize {
   width: number;
   height: number;

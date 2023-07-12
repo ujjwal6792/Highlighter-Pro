@@ -1,7 +1,7 @@
 import { Rnd } from "react-rnd";
 import { twMerge } from "tailwind-merge";
-import { proptypes, classnameObject, objectSize } from "../../shapeTypes";
-import { useRef, useState } from "react";
+import { proptypes, objectSize } from "../../shapeTypes";
+import { useState } from "react";
 import { Rectangle, Square } from "../../assets/ShapesSvg";
 const ShapesHandler = (props: proptypes) => {
   const {
@@ -19,14 +19,16 @@ const ShapesHandler = (props: proptypes) => {
     width: dimension || 200 - 10,
     height: dimension || 200 - 10,
   });
-  const majorClass = useRef<classnameObject | null>({ type: "" });
 
   const shapeClassName = twMerge(
-    "justify-center items-center hover:border hover:border-dashed hover:border-black",
-    majorClass.current?.type
+    "justify-center items-center hover:border hover:border-dashed hover:border-black"
   );
 
-  const handleResize = (e, a, ref: HTMLElement) => {
+  const handleResize = (
+    e: MouseEvent | TouchEvent,
+    a: string,
+    ref: HTMLElement
+  ) => {
     const width = parseInt(ref.style.width.trim().replace("px", "")) - 10;
     const height = parseInt(ref.style.height.trim().replace("px", "")) - 10;
 
@@ -34,8 +36,9 @@ const ShapesHandler = (props: proptypes) => {
       width,
       height,
     });
+    [e, a];
   };
-
+  console.log(className, borderWidth, borderColor, borderRadius, fillColor);
   return (
     <div className="">
       <Rnd
