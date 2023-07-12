@@ -1,5 +1,4 @@
 import { Rnd } from "react-rnd";
-import { twMerge } from "tailwind-merge";
 import { objectSize } from "../../shapeTypes";
 import { useState } from "react";
 import { Circle, Rectangle, Square } from "../../assets/shapesJsx";
@@ -19,17 +18,13 @@ const ShapesHandler = () => {
     height: dimension || 200 ,
   });
 
-  const shapeClassName = twMerge(
-    "justify-center items-center hover:border hover:border-dashed hover:border-black"
-  );
-
   const handleResize = (
     e: MouseEvent | TouchEvent,
     a: string,
     ref: HTMLElement
   ) => {
-    const width = parseInt(ref.style.width.trim().replace("px", "")) ;
-    const height = parseInt(ref.style.height.trim().replace("px", "")) ;
+    const width = parseInt(ref.style.width.trim().replace("px", "")) -20 ;
+    const height = parseInt(ref.style.height.trim().replace("px", "")) -20 ;
 
     setSize({
       width,
@@ -42,12 +37,12 @@ const ShapesHandler = () => {
     <div className="">
       <Rnd
         style={{ display: "flex" }}
-        className={shapeClassName}
+        className='justify-center items-center hover:border-[1.5px] border-dashed border-black rounded-md'
         default={{
           x: 100,
           y: 100,
           width: size.width + 20 || 200,
-          height: type === "rect" ? size.width || 150 / 1.5 : size.height || 200,
+          height: type === "rect" ? size.width + 20 || (150 / 1.5) + 20 : size.height + 20 || 200,
         }}
         enableResizing={{
           top: type === "rect",
