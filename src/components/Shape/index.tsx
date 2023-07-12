@@ -1,35 +1,8 @@
 import { Rnd } from "react-rnd";
 import { twMerge } from "tailwind-merge";
-enum textPosition {
-  top = "top",
-  bottom = "bottom",
-  left = "left",
-  right = "right",
-  topRight = "top-right",
-  topLeft = "top-left",
-  bottomRight = "bottom-right",
-  bottomLeft = "bottom-left",
-}
-enum type {
-  rect,
-  circle,
-  square,
-  arrow,
-  triangle,
-}
-interface proptypes {
-  type: type;
-  text: string;
-  textPosition: textPosition;
-  className: string;
-  borderWidth: number;
-  borderColor: string;
-  borderRadius: number;
-  width: number;
-  height: number;
-  fillColor: string;
-}
-
+import { proptypes, classnameObject, objectSize } from "../../shapeTypes";
+import { useRef, useState } from "react";
+import { Rectangle, Square } from "../../assets/ShapesSvg";
 const ShapesHandler = (props: proptypes) => {
   const {
     type,
@@ -39,29 +12,71 @@ const ShapesHandler = (props: proptypes) => {
     borderWidth,
     borderColor,
     borderRadius,
-    width,
-    height,
+    dimension,
     fillColor,
   } = props;
+  const [size, setSize] = useState<objectSize>({
+    width: dimension || 200 - 10,
+    height: dimension || 200 - 10,
+  });
+  const majorClass = useRef<classnameObject | null>({ type: "" });
 
   const shapeClassName = twMerge(
-    "justify-center items-center border border-black",
-    ""
+    "justify-center items-center hover:border hover:border-dashed hover:border-black",
+    majorClass.current?.type
   );
 
+  const handleResize = (e, a, ref: HTMLElement) => {
+    const width = parseInt(ref.style.width.trim().replace("px", "")) - 10;
+    const height = parseInt(ref.style.height.trim().replace("px", "")) - 10;
+
+    setSize({
+      width,
+      height,
+    });
+  };
+
   return (
-    <Rnd
-      style={{ display: "flex" }}
-      className={shapeClassName}
-      default={{
-        x: 100,
-        y: 100,
-        width: width || 320,
-        height: height || 200,
-      }}
-    >
-      <span className={textPosition}>{text}</span>
-    </Rnd>
+    <div className="">
+      <Rnd
+        style={{ display: "flex" }}
+        className={shapeClassName}
+        default={{
+          x: 100,
+          y: 100,
+          width: dimension || 200,
+          height: dimension || 200,
+        }}
+        enableResizing={{
+          top: false,
+          right: false,
+          bottom: false,
+          left: false,
+          topRight: true,
+          bottomRight: true,
+          bottomLeft: true,
+          topLeft: true,
+        }}
+        lockAspectRatio={true}
+        onResize={handleResize}
+      >
+        {type === "square" ? (
+          <Square
+            size={Number(size.height) || 200 - 10}
+            borderColor="#000"
+            fillColor="transparent"
+          />
+        ) : (
+          <Rectangle
+            borderColor="#000"
+            fillColor="transparent"
+            height={Number(size.height) || 200 - 10}
+            width={Number(size.width) - 10}
+          />
+        )}
+        <span className={textPosition}>{text}</span>
+      </Rnd>
+    </div>
   );
 };
 

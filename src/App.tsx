@@ -2,11 +2,16 @@ import ShapesHandler from "./components/Shape";
 import domtoimage from "dom-to-image";
 import FileSaver from "file-saver";
 import "./index.css";
+import { typeEnum } from "./shapeTypes";
 function App() {
-  const downloadImage = async () => {
-    const imageNode: HTMLElement = document.getElementById("app")!;
-    const imageBlob = await domtoimage.toBlob(imageNode)!;
-    FileSaver.saveAs(imageBlob, "highligher-pro");
+  const downloadImage = async (): Promise<void> => {
+    const imageNode: HTMLElement | null = document.getElementById("app");
+    if (imageNode) {
+      const imageBlob: Blob | null = await domtoimage.toBlob(imageNode);
+      if (imageBlob) {
+        FileSaver.saveAs(imageBlob, "highligher-pro");
+      }
+    }
   };
   return (
     <>
@@ -14,7 +19,7 @@ function App() {
         id="app"
         className="h-screen w-screen bg-yellow-50 overflow-hidden overscroll-none"
       >
-        <ShapesHandler />
+        <ShapesHandler type={typeEnum.square} />
         <button onClick={downloadImage}>Download Image</button>
       </div>
     </>
