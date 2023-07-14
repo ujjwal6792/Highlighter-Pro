@@ -1,7 +1,13 @@
 import { Rnd } from "react-rnd";
 import { objectSize } from "../../shapeTypes";
 import { useState } from "react";
-import { Circle, Rectangle, Square } from "../../assets/shapesJsx";
+import {
+  Circle,
+  Rectangle,
+  SingleArrowLine,
+  Square,
+  Triangle,
+} from "../../assets/shapesJsx";
 import { usePropertiesStore } from "../../store";
 const ShapesHandler = () => {
   const { properties } = usePropertiesStore();
@@ -36,7 +42,9 @@ const ShapesHandler = () => {
     [e, a];
   };
 
-
+  {
+    console.log(type);
+  }
 
   return (
     <div className="">
@@ -80,6 +88,22 @@ const ShapesHandler = () => {
             fillColor={fillColor}
             borderWidth={borderWidth}
             borderRadius={"50%"}
+            borderStyle={borderStyle}
+          />
+        ) : type === "arrow" ? (
+          <SingleArrowLine
+            borderColor={borderColor}
+            fillColor={fillColor}
+            borderWidth={borderWidth}
+            borderRadius={borderRadius}
+            borderStyle={borderStyle}
+          />
+        ) : type === "triangle" ? (
+          <Triangle
+            borderColor={borderColor}
+            fillColor={fillColor}
+            borderWidth={borderWidth}
+            borderRadius={borderRadius}
             borderStyle={borderStyle}
           />
         ) : (
