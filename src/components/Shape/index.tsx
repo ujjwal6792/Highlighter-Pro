@@ -6,9 +6,11 @@ import {
   Square,
   Triangle,
 } from "../../assets/shapesJsx";
-import { useShapeStore } from "../../store";
+import { usePropertiesStore, useSelectedShapeStore, useShapeStore } from "../../store";
 const ShapesHandler = () => {
   const {AddedShapes} = useShapeStore()
+  const {setSelectedShape} = useSelectedShapeStore()
+  const {updateProperties} =  usePropertiesStore()
 
   return (
     <div className="">
@@ -22,6 +24,8 @@ const ShapesHandler = () => {
           borderStyle,
           text} = shape.properties
       return <Rnd
+      key={shape.id}
+        onClick = {()=> {setSelectedShape(shape.id); updateProperties(shape.properties)}}
         style={{ display: "flex" }}
         className={`justify-center items-center hover:border-[1.5px] border-dashed border-black rounded-md`}
         default={{
