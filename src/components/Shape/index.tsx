@@ -13,7 +13,7 @@ const ShapesHandler = () => {
   const {updateProperties} =  usePropertiesStore()
 
   return (
-    <div className="">
+    <div className="absolute top-0 left-0">
       { AddedShapes.map((shape)=> {
         const {    type,
           borderColor,
@@ -29,8 +29,8 @@ const ShapesHandler = () => {
         style={{ display: "flex" }}
         className={`justify-center items-center hover:border-[1.5px] border-dashed border-black rounded-md`}
         default={{
-          x: 100,
-          y: 100,
+          x: 0,
+          y: 0,
           width: 220,
           height: type === "rect" ? 220 / 1.5 : 220,
         }}
