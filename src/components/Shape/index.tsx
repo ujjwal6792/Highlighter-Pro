@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import { Rnd } from "react-rnd";
 import {
   Circle,
@@ -6,98 +7,187 @@ import {
   Square,
   Triangle,
 } from "../../assets/shapesJsx";
-import { usePropertiesStore, useSelectedShapeStore, useShapeStore } from "../../store";
+import {
+  usePropertiesStore,
+  useSelectedShapeStore,
+  useShapeStore,
+} from "../../store";
+
 const ShapesHandler = () => {
-  const {AddedShapes} = useShapeStore()
-  const {setSelectedShape} = useSelectedShapeStore()
-  const {updateProperties} =  usePropertiesStore()
+  const { AddedShapes } = useShapeStore();
+  const { id, setSelectedShape } = useSelectedShapeStore();
+  const { updateProperties } = usePropertiesStore();
+  const [rotationAngle, setRotationAngle] = useState(0);
+  const [showRotation, setShowRotation] = useState(false);
+  const [lastClickTime, setLastClickTime] = useState(0);
+  const longPressTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
+  const incrementIntervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the interval ID
+  const decrementIntervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the interval ID
+
+  const handleMouseDown = (rotateFunc: () => void) => {
+    longPressTimeoutRef.current = setTimeout(() => {
+      rotateFunc(); // Call the respective rotate function
+
+      // Start incrementing or decrementing the angle continuously
+      if (rotateFunc === handleClockwiseRotation) {
+        incrementIntervalRef.current = setInterval(() => {
+          rotateFunc();
+        }, 50);
+      } else if (rotateFunc === handleAnticlockwiseRotation) {
+        decrementIntervalRef.current = setInterval(() => {
+          rotateFunc();
+        }, 50);
+      }
+    }, 50);
+  };
+
+  const handleMouseUp = () => {
+    clearTimeout(longPressTimeoutRef.current!); // Clear the timeout when mouse is released
+
+    // Clear the increment or decrement intervals
+    clearInterval(incrementIntervalRef.current!);
+    clearInterval(decrementIntervalRef.current!);
+  };
+
+  const handleClockwiseRotation = () => {
+    setRotationAngle((prevAngle) => prevAngle + 1); // Increment rotation angle by 1 degree clockwise
+  };
+
+  const handleAnticlockwiseRotation = () => {
+    setRotationAngle((prevAngle) => prevAngle - 1); // Decrement rotation angle by 1 degree anticlockwise
+  };
 
   return (
-    <div className="absolute top-0 left-0">
-      { AddedShapes.map((shape)=> {
-        const {    type,
+    <div style={{}} className="absolute top-0 left-0">
+      {AddedShapes.map((shape) => {
+        const {
+          type,
           borderColor,
           borderWidth,
           borderRadius,
           fillColor,
           textPosition,
           borderStyle,
-          text} = shape.properties
-      return <Rnd
-      key={shape.id}
-        onClick = {()=> {setSelectedShape(shape.id); updateProperties(shape.properties)}}
-        style={{ display: "flex" }}
-        className={`justify-center p-1.5 items-center outline-[1.5px] hover:outline-dashed outline-fuchsia-800 rounded-md`}
-        default={{
-          x: 0,
-          y: 0,
-          width: 220,
-          height: type === "rect" ? 220 / 1.5 : 220,
-        }}
-        enableResizing={{
-          top: type === "rect",
-          right: type === "rect",
-          bottom: type === "rect",
-          left: type === "rect",
-          topRight: true,
-          bottomRight: true,
-          bottomLeft: true,
-          topLeft: true,
-        }}
-        lockAspectRatio={type === "rect" ? false : true}
-      >
-        {type === "square" ? (
-          <Square
-            height={200}
-            width={200}
-            borderColor={borderColor}
-            fillColor={fillColor}
-            borderWidth={borderWidth}
-            borderRadius={borderRadius}
-            borderStyle={borderStyle}
-          />
-        ) : type === "circle" ? (
-          <Circle
-            height={200}
-            width={200}
-            borderColor={borderColor}
-            fillColor={fillColor}
-            borderWidth={borderWidth}
-            borderRadius={"50%"}
-            borderStyle={borderStyle}
-          />
-        ) : type === "arrow" ? (
-          <SingleArrowLine
-            borderColor={borderColor}
-            fillColor={fillColor}
-            borderWidth={borderWidth}
-            borderRadius={borderRadius}
-            borderStyle={borderStyle}
-          />
-        ) : type === "triangle" ? (
-          <Triangle
-            borderColor={borderColor}
-            fillColor={fillColor}
-            borderWidth={borderWidth}
-            borderRadius={borderRadius}
-            borderStyle={borderStyle}
-          />
-        ) : (
-          <Rectangle
-            borderColor={borderColor}
-            fillColor={fillColor}
-            borderWidth={borderWidth}
-            borderRadius={borderRadius}
-            borderStyle={borderStyle}
-          />
-        )}
-        {text !== undefined && text?.length > 0 && (
-          <span className={textPosition}>{text}</span>
-        )}
-      </Rnd>
-      }
-      )
-}
+          text,
+        } = shape.properties;
+        return (
+          <Rnd
+            key={shape.id}
+            onClick={() => {
+              const currentTime = new Date().getTime();
+              const clickTimeDiff = currentTime - lastClickTime;
+              const doubleClickThreshold = 300;
+              if (clickTimeDiff < doubleClickThreshold) {
+                // Double click detected
+                setShowRotation((o) => !o);
+                setLastClickTime(0);
+              } else {
+                // Single click detected
+                if (id !== shape.id) {
+                  setSelectedShape(shape.id);
+                  updateProperties(shape.properties);
+                }
+                setLastClickTime(currentTime);
+              }
+            }}
+            style={{ display: "flex" }}
+            className={`justify-center p-1.5 items-center outline-[1.5px] hover:outline-dashed outline-fuchsia-800 rounded-md`}
+            default={{
+              x: 0,
+              y: 0,
+              width: 220,
+              height: type === "rect" ? 220 / 1.5 : 220,
+            }}
+            enableResizing={{
+              top: type === "rect",
+              right: type === "rect",
+              bottom: type === "rect",
+              left: type === "rect",
+              topRight: true,
+              bottomRight: true,
+              bottomLeft: true,
+              topLeft: true,
+            }}
+            lockAspectRatio={type === "rect" ? false : true}
+            onMouseUp={handleMouseUp}
+          >
+            {showRotation && shape.id === id && (
+              <div className="absolute -bottom-12 flex gap-10">
+                <button
+                  onMouseDown={() => handleMouseDown(handleClockwiseRotation)}
+                  onMouseUp={handleMouseUp}
+                >
+                  Clockwise
+                </button>
+                <button
+                  onMouseDown={() =>
+                    handleMouseDown(handleAnticlockwiseRotation)
+                  }
+                  onMouseUp={handleMouseUp}
+                >
+                  Anticlockwise
+                </button>
+              </div>
+            )}
+            <div
+              className="w-full h-full relative flex justify-center items-center"
+              style={{
+                transform: `rotate(${rotationAngle}deg)`,
+                transition: "transform 0.3s ease-in-out", 
+              }}
+            >
+              {type === "square" ? (
+                <Square
+                  height={200}
+                  width={200}
+                  borderColor={borderColor}
+                  fillColor={fillColor}
+                  borderWidth={borderWidth}
+                  borderRadius={borderRadius}
+                  borderStyle={borderStyle}
+                />
+              ) : type === "circle" ? (
+                <Circle
+                  height={200}
+                  width={200}
+                  borderColor={borderColor}
+                  fillColor={fillColor}
+                  borderWidth={borderWidth}
+                  borderRadius={"50%"}
+                  borderStyle={borderStyle}
+                />
+              ) : type === "arrow" ? (
+                <SingleArrowLine
+                  borderColor={borderColor}
+                  fillColor={fillColor}
+                  borderWidth={borderWidth}
+                  borderRadius={borderRadius}
+                  borderStyle={borderStyle}
+                />
+              ) : type === "triangle" ? (
+                <Triangle
+                  borderColor={borderColor}
+                  fillColor={fillColor}
+                  borderWidth={borderWidth}
+                  borderRadius={borderRadius}
+                  borderStyle={borderStyle}
+                />
+              ) : (
+                <Rectangle
+                  borderColor={borderColor}
+                  fillColor={fillColor}
+                  borderWidth={borderWidth}
+                  borderRadius={borderRadius}
+                  borderStyle={borderStyle}
+                />
+              )}
+            </div>
+            {text !== undefined && text?.length > 0 && (
+              <span className={textPosition}>{text}</span>
+            )}
+          </Rnd>
+        );
+      })}
     </div>
   );
 };
