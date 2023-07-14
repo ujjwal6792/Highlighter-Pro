@@ -13,7 +13,7 @@ interface ShapeProps {
 const Square: React.FC<ShapeProps> = ({
   width = 100,
   fillColor = "transparent",
-  borderWidth = "2px",
+  borderWidth = "2",
   borderColor = "black",
   borderRadius = "0",
   borderStyle = "solid",
@@ -22,9 +22,9 @@ const Square: React.FC<ShapeProps> = ({
     width: width,
     aspectRatio: '1/1',
     backgroundColor: fillColor,
-    borderWidth: borderWidth,
+    borderWidth: borderWidth + "px",
     borderColor: borderColor,
-    borderRadius: borderRadius,
+    borderRadius: borderRadius+'px',
     borderStyle: borderStyle,
   };
 
@@ -33,7 +33,7 @@ const Square: React.FC<ShapeProps> = ({
 
 const Rectangle: React.FC<ShapeProps> = ({
   fillColor = "transparent",
-  borderWidth = "2px",
+  borderWidth = "2",
   borderColor = "black",
   borderRadius = "0",
   borderStyle = "solid",
@@ -42,9 +42,9 @@ const Rectangle: React.FC<ShapeProps> = ({
     width: "100%",
     height: "100%",
     backgroundColor: fillColor,
-    borderWidth: borderWidth,
+    borderWidth: borderWidth+'px',
     borderColor: borderColor,
-    borderRadius: borderRadius,
+    borderRadius: borderRadius+'px',
     borderStyle: borderStyle,
   };
 
@@ -55,18 +55,17 @@ const Circle: React.FC<ShapeProps> = ({
   width = 100,
   height = 100,
   fillColor = "transparent",
-  borderWidth = "2px",
+  borderWidth = "2",
   borderColor = "black",
-  borderRadius = "50%",
   borderStyle = "solid",
 }) => {
   const circleStyle = {
     width: width,
     height: height,
     backgroundColor: fillColor,
-    borderWidth: borderWidth,
+    borderWidth: borderWidth+'px',
     borderColor: borderColor,
-    borderRadius: borderRadius,
+    borderRadius: "50%",
     borderStyle: borderStyle,
   };
 
