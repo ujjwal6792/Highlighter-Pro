@@ -1,8 +1,8 @@
 import { TypeEnum } from "../../shapeTypes";
-import { useShapeStore } from "../../store";
+import { usePropertiesStore } from "../../store";
 
 const AddShape = () => {
-  const { updateShape } = useShapeStore();
+  const { updateProperties } = usePropertiesStore();
   const shapes = Object.keys(TypeEnum).map((item) =>
     item === "rect" ? "rectangle" : item
   );
@@ -19,7 +19,7 @@ const AddShape = () => {
                   item === "rectangle"
                     ? ("rect" as keyof typeof TypeEnum)
                     : (item as keyof typeof TypeEnum);
-                updateShape({ type: TypeEnum[input] });
+                updateProperties({ type: TypeEnum[input] });
               }}
               className="flex items-center justify-center capitalize rounded-md cursor-pointer py-1 px-2 bg-gray-600 text-white hover:bg-gray-800 transition-colors"
               key={i}

@@ -2,9 +2,9 @@ import { Rnd } from "react-rnd";
 import { objectSize } from "../../shapeTypes";
 import { useState } from "react";
 import { Circle, Rectangle, Square } from "../../assets/shapesJsx";
-import { useShapeStore } from "../../store";
+import { usePropertiesStore } from "../../store";
 const ShapesHandler = () => {
-  const { shape } = useShapeStore();
+  const { properties } = usePropertiesStore();
   const {
     type,
     dimension,
@@ -15,7 +15,7 @@ const ShapesHandler = () => {
     textPosition,
     borderStyle,
     text,
-  } = shape;
+  } = properties;
   const [size, setSize] = useState<objectSize>({
     width: dimension || 200,
     height: dimension || 200,
@@ -35,6 +35,8 @@ const ShapesHandler = () => {
     });
     [e, a];
   };
+
+
 
   return (
     <div className="">
