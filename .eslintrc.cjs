@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
@@ -13,7 +11,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
-    project: true,
     tsconfigRootDir: __dirname,
   },
   plugins: ["react-refresh"],
@@ -22,8 +19,24 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
-    "@typescript-eslint/no-unsafe-call": "off",
-    "@typescript-eslint/no-unsafe-member-access": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unsafe-call": ["off"],
+    "@typescript-eslint/no-unsafe-member-access": ["off"],
+    "@typescript-eslint/no-non-null-assertion": ["off"],
   },
+  overrides: [
+    {
+      files: ["*.ts", "*.tsx"],
+      parserOptions: {
+        project: ["./tsconfig.json"],
+      },
+    },
+    {
+      files: ["vite.config.ts"],
+      excludedFiles: "*.ts",
+    },
+    {
+      files: [".eslintrc.cjs"],
+      excludedFiles: "*.cjs",
+    },
+  ],
 };

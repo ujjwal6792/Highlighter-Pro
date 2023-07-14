@@ -1,6 +1,4 @@
 import { Rnd } from "react-rnd";
-import { objectSize } from "../../shapeTypes";
-import { useState } from "react";
 import {
   Circle,
   Rectangle,
@@ -8,54 +6,29 @@ import {
   Square,
   Triangle,
 } from "../../assets/shapesJsx";
-import { usePropertiesStore } from "../../store";
+import { useShapeStore } from "../../store";
 const ShapesHandler = () => {
-  const { properties } = usePropertiesStore();
-  const {
-    type,
-    dimension,
-    borderColor,
-    borderWidth,
-    borderRadius,
-    fillColor,
-    textPosition,
-    borderStyle,
-    text,
-  } = properties;
-  const [size, setSize] = useState<objectSize>({
-    width: dimension || 200,
-    height: dimension || 200,
-  });
-
-  const handleResize = (
-    e: MouseEvent | TouchEvent,
-    a: string,
-    ref: HTMLElement
-  ) => {
-    const width = parseInt(ref.style.width.trim().replace("px", "")) - 20;
-    const height = parseInt(ref.style.height.trim().replace("px", "")) - 20;
-
-    setSize({
-      width,
-      height,
-    });
-    [e, a];
-  };
-
-  {
-    console.log(type);
-  }
+  const {AddedShapes} = useShapeStore()
 
   return (
     <div className="">
-      <Rnd
+      { AddedShapes.map((shape)=> {
+        const {    type,
+          borderColor,
+          borderWidth,
+          borderRadius,
+          fillColor,
+          textPosition,
+          borderStyle,
+          text} = shape.properties
+      return <Rnd
         style={{ display: "flex" }}
         className={`justify-center items-center hover:border-[1.5px] border-dashed border-black rounded-md`}
         default={{
           x: 100,
           y: 100,
-          width: size.width + 20,
-          height: type === "rect" ? size.height / 1.5 : size.height,
+          width: 220,
+          height: type === "rect" ? 220 / 1.5 : 220,
         }}
         enableResizing={{
           top: type === "rect",
@@ -68,12 +41,11 @@ const ShapesHandler = () => {
           topLeft: true,
         }}
         lockAspectRatio={type === "rect" ? false : true}
-        onResize={handleResize}
       >
         {type === "square" ? (
           <Square
-            height={Number(size.width)}
-            width={Number(size.width)}
+            height={200}
+            width={200}
             borderColor={borderColor}
             fillColor={fillColor}
             borderWidth={borderWidth}
@@ -82,8 +54,8 @@ const ShapesHandler = () => {
           />
         ) : type === "circle" ? (
           <Circle
-            height={Number(size.height)}
-            width={Number(size.width)}
+            height={200}
+            width={200}
             borderColor={borderColor}
             fillColor={fillColor}
             borderWidth={borderWidth}
@@ -119,6 +91,9 @@ const ShapesHandler = () => {
           <span className={textPosition}>{text}</span>
         )}
       </Rnd>
+      }
+      )
+}
     </div>
   );
 };

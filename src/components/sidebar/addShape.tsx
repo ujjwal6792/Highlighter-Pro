@@ -1,11 +1,17 @@
-import { TypeEnum } from "../../shapeTypes";
-import { usePropertiesStore } from "../../store";
+import { TypeEnum, proptypes } from "../../shapeTypes";
+import { usePropertiesStore, useShapeStore } from "../../store";
+import generateUUIDv4 from "../../utils/generateUuid";
 
 const AddShape = () => {
-  const { updateProperties } = usePropertiesStore();
+  const { properties, updateProperties } = usePropertiesStore();
+  const { updateShapeArray } = useShapeStore();
   const shapes = Object.keys(TypeEnum).map((item) =>
     item === "rect" ? "rectangle" : item
   );
+
+  const updateElements = (newProperties: proptypes) => {
+    updateShapeArray({ id: generateUUIDv4(), properties: newProperties });
+  };
 
   return (
     <div>
@@ -20,6 +26,8 @@ const AddShape = () => {
                     ? ("rect" as keyof typeof TypeEnum)
                     : (item as keyof typeof TypeEnum);
                 updateProperties({ type: TypeEnum[input] });
+                const newProperties = { ...properties, type: TypeEnum[input] };
+                updateElements(newProperties);
               }}
               className="flex items-center justify-center capitalize rounded-md cursor-pointer py-1 px-2 bg-gray-600 text-white hover:bg-gray-800 transition-colors"
               key={i}
