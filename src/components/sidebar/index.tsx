@@ -25,7 +25,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="relative grid gap-3 h-full min-w-[300px] max-w-[400px] w-[20vw] p-4 bg-slate-100 shadow-lg z-50">
+    <div className="relative flex flex-col gap-6 h-full min-w-[300px] max-w-[400px] w-[20vw] p-4 bg-slate-100 shadow-lg z-50">
       <ImageUploader />
       <AddShape />
      <ChangeShapeProperties/> 

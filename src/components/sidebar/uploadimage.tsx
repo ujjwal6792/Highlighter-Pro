@@ -21,15 +21,15 @@ const ImageUploader: React.FC = () => {
   return (
     <div
       {...getRootProps()}
-      className={`px-4 py-2 cursor-pointer rounded-md border border-slate-700 ${
+      className={`px-4 py-2 min-h-[200px] flex flex-col justify-center items-center cursor-pointer rounded-md border border-slate-700 ${
         isDragActive ? "active" : ""
       }`}
     >
       <input {...getInputProps()} />
       {isDragActive ? (
-        <p>Drop the image here...</p>
+        <p className="text-lg text-center">Drop the image here...</p>
       ) : (
-        <p>Drag and drop an image here, or click to select an image</p>
+        <p className="text-lg text-center">Drag and drop an image here, or click to select an image</p>
       )}
     </div>
   );

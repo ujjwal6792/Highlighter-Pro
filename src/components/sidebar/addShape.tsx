@@ -36,7 +36,7 @@ const AddShape = () => {
 
   return (
     <div>
-      <h1 className="font-semibold">Add a Shape</h1>
+      <h1 className="font-semibold text-lg mb-4 select-none cursor-default">Add a Shape</h1>
       <div className="grid grid-cols-2 gap-2">
         {shapes.map((item, i) => {
           return (
