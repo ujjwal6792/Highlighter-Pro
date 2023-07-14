@@ -27,7 +27,7 @@ const ShapesHandler = () => {
       key={shape.id}
         onClick = {()=> {setSelectedShape(shape.id); updateProperties(shape.properties)}}
         style={{ display: "flex" }}
-        className={`justify-center items-center hover:border-[1.5px] border-dashed border-black rounded-md`}
+        className={`justify-center p-1.5 items-center outline-[1.5px] hover:outline-dashed outline-fuchsia-800 rounded-md`}
         default={{
           x: 0,
           y: 0,
