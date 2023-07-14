@@ -6,23 +6,6 @@ import {
   BorderStyleEnum,
 } from "../shapeTypes";
 
-type addedShapes = {
-  id: string;
-  properties: proptypes;
-};
-export interface shapeProperties {
-  properties: proptypes;
-  updateProperties: (newProperties: Partial<proptypes>) => void;
-}
-export interface ShapeStore {
-  AddedShapes: addedShapes[];
-  updateShapeArray: (newShape: addedShapes) => void;
-}
-interface imageStore {
-  imageData: string;
-  setImageData: (imageData: string) => void;
-}
-
 export const usePropertiesStore = create<shapeProperties>((set) => ({
   properties: {
     type: TypeEnum.rect,
@@ -44,7 +27,7 @@ export const usePropertiesStore = create<shapeProperties>((set) => ({
     }));
   },
 }));
-// Create the Zustand store
+
 export const useShapeStore = create<ShapeStore>((set) => ({
   AddedShapes: [],
   updateShapeArray: (newShape: addedShapes) => {
@@ -71,3 +54,34 @@ export const useImageStore = create<imageStore>((set) => ({
     set({ imageData });
   },
 }));
+
+export const useSelectedShapeStore = create<selectedShapeId>((set) => ({
+  id: "",
+  setSelectedShape: (id: string) => {
+    set({ id });
+  },
+}));
+
+// types and interfaces
+type addedShapes = {
+  id: string;
+  properties: proptypes;
+};
+
+interface selectedShapeId {
+  id: string;
+  setSelectedShape: (id: string) => void;
+}
+
+export interface shapeProperties {
+  properties: proptypes;
+  updateProperties: (newProperties: Partial<proptypes>) => void;
+}
+export interface ShapeStore {
+  AddedShapes: addedShapes[];
+  updateShapeArray: (newShape: addedShapes) => void;
+}
+interface imageStore {
+  imageData: string;
+  setImageData: (imageData: string) => void;
+}

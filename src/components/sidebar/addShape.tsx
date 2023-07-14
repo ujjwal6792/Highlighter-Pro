@@ -1,16 +1,23 @@
 import { TypeEnum, proptypes } from "../../shapeTypes";
-import { usePropertiesStore, useShapeStore } from "../../store";
+import {
+  usePropertiesStore,
+  useSelectedShapeStore,
+  useShapeStore,
+} from "../../store";
 import generateUUIDv4 from "../../utils/generateUuid";
 
 const AddShape = () => {
   const { properties, updateProperties } = usePropertiesStore();
   const { updateShapeArray } = useShapeStore();
+  const { setSelectedShape } = useSelectedShapeStore();
   const shapes = Object.keys(TypeEnum).map((item) =>
     item === "rect" ? "rectangle" : item
   );
 
   const updateElements = (newProperties: proptypes) => {
-    updateShapeArray({ id: generateUUIDv4(), properties: newProperties });
+    const UUID = generateUUIDv4();
+    setSelectedShape(UUID);
+    updateShapeArray({ id: UUID, properties: newProperties });
   };
 
   return (
