@@ -117,7 +117,7 @@ const ShapesHandler = () => {
               topLeft: true,
             }}
             lockAspectRatio={type === "rect" ? false : true}
-            onMouseUp={handleMouseUp}
+            // onMouseUp={handleMouseUp}
           >
             {/* {showRotation && shape.id === id && (
               <div className="absolute -bottom-12 flex gap-10">
