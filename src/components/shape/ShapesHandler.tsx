@@ -1,4 +1,3 @@
-import { useState, useRef } from "react";
 import { Rnd } from "react-rnd";
 import {
   Circle,
@@ -14,56 +13,56 @@ import {
 } from "src/store/";
 
 const ShapesHandler = () => {
-  const { AddedShapes, updateShapeArray } = useShapeStore();
+  const { AddedShapes } = useShapeStore();
   const { id, setSelectedShape } = useSelectedShapeStore();
-  const { properties, updateProperties } = usePropertiesStore();
+  const { updateProperties } = usePropertiesStore();
   // const [rotationAngle, setRotationAngle] = useState(properties.rotation)
   // const [showRotation, setShowRotation] = useState(false);
   // const [lastClickTime, setLastClickTime] = useState(0);
-  const longPressTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
-  const incrementIntervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the interval ID
-  const decrementIntervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the interval ID
+  // const longPressTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
+  // const incrementIntervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the interval ID
+  // const decrementIntervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the interval ID
 
-  const handleMouseDown = (rotateFunc: () => void) => {
-    longPressTimeoutRef.current = setTimeout(() => {
-      rotateFunc(); // Call the respective rotate function
+  // const handleMouseDown = (rotateFunc: () => void) => {
+  //   longPressTimeoutRef.current = setTimeout(() => {
+  //     rotateFunc(); // Call the respective rotate function
 
-      // Start incrementing or decrementing the angle continuously
-      if (rotateFunc === handleClockwiseRotation) {
-        incrementIntervalRef.current = setInterval(() => {
-          rotateFunc();
-        }, 50);
-      } else if (rotateFunc === handleAnticlockwiseRotation) {
-        decrementIntervalRef.current = setInterval(() => {
-          rotateFunc();
-        }, 50);
-      }
-    }, 50);
-  };
+  //     // Start incrementing or decrementing the angle continuously
+  //     if (rotateFunc === handleClockwiseRotation) {
+  //       incrementIntervalRef.current = setInterval(() => {
+  //         rotateFunc();
+  //       }, 50);
+  //     } else if (rotateFunc === handleAnticlockwiseRotation) {
+  //       decrementIntervalRef.current = setInterval(() => {
+  //         rotateFunc();
+  //       }, 50);
+  //     }
+  //   }, 50);
+  // };
 
-  const handleMouseUp = () => {
-    clearTimeout(longPressTimeoutRef.current!); // Clear the timeout when mouse is released
+  // const handleMouseUp = () => {
+  //   clearTimeout(longPressTimeoutRef.current!); // Clear the timeout when mouse is released
 
-    // Clear the increment or decrement intervals
-    clearInterval(incrementIntervalRef.current!);
-    clearInterval(decrementIntervalRef.current!);
-  };
+  //   // Clear the increment or decrement intervals
+  //   clearInterval(incrementIntervalRef.current!);
+  //   clearInterval(decrementIntervalRef.current!);
+  // };
 
-  const setNewRotation = (rotation: number) => {
-    updateProperties({ rotation: rotation });
-    updateShapeArray({
-      id: id,
-      properties: { ...properties, rotation: rotation },
-    });
-  };
+  // const setNewRotation = (rotation: number) => {
+  //   updateProperties({ rotation: rotation });
+  //   updateShapeArray({
+  //     id: id,
+  //     properties: { ...properties, rotation: rotation },
+  //   });
+  // };
 
-  const handleClockwiseRotation = () => {
-    setNewRotation(Number(properties.rotation) + 1); // Increment rotation angle by 1 degree clockwise
-  };
+  // const handleClockwiseRotation = () => {
+  //   setNewRotation(Number(properties.rotation) + 1); // Increment rotation angle by 1 degree clockwise
+  // };
 
-  const handleAnticlockwiseRotation = () => {
-    setNewRotation(Number(properties.rotation) - 1); // Decrement rotation angle by 1 degree anticlockwise
-  };
+  // const handleAnticlockwiseRotation = () => {
+  //   setNewRotation(Number(properties.rotation) - 1); // Decrement rotation angle by 1 degree anticlockwise
+  // };
 
   return (
     <div style={{}} className="absolute top-0 left-0">
