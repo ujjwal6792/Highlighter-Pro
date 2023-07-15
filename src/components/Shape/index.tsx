@@ -6,12 +6,12 @@ import {
   SingleArrowLine,
   Square,
   Triangle,
-} from "../../assets/shapesJsx";
+} from "src/assets/shapesJsx";
 import {
   usePropertiesStore,
   useSelectedShapeStore,
   useShapeStore,
-} from "../../store";
+} from "src/store/";
 
 const ShapesHandler = () => {
   const { AddedShapes } = useShapeStore();

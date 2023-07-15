@@ -1,6 +1,6 @@
-import CanvasSection from "./components/canvas";
-import Sidebar from "./components/sidebar";
-import "./index.css";
+import CanvasSection from "src/components/canvas";
+import Sidebar from "src/components/sidebar";
+import "src/index.css";
 
 function App() {
   return (

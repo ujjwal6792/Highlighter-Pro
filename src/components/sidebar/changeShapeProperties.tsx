@@ -3,15 +3,15 @@ import {
   usePropertiesStore,
   useSelectedShapeStore,
   useShapeStore,
-} from "../../store";
+} from "src/store";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { BorderStyleEnum } from "../../shapeTypes";
+} from "src/components/ui/dropdown-menu";
+import { BorderStyleEnum } from "src/shapeTypes";
 
 const borderStyles = Object.keys(BorderStyleEnum);
 

@@ -1,8 +1,8 @@
 import domtoimage from "dom-to-image";
 import FileSaver from "file-saver";
-import ImageUploader from "./uploadimage";
-import AddShape from "./addShape";
-import ChangeShapeProperties from "./changeShapeProperties";
+import ImageUploader from "src/components/sidebar/uploadimage";
+import AddShape from "src/components/sidebar/addShape";
+import ChangeShapeProperties from "src/components/sidebar/changeShapeProperties";
 
 const Sidebar = () => {
   const downloadImage = (): void => {

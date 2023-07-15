@@ -1,6 +1,6 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
-import { useImageStore } from "../../store";
+import { useImageStore } from "src/store";
 
 const ImageUploader: React.FC = () => {
   const { setImageData } = useImageStore();

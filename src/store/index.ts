@@ -4,7 +4,7 @@ import {
   TypeEnum,
   TextPositionEnum,
   BorderStyleEnum,
-} from "../shapeTypes";
+} from "src/shapeTypes/";
 
 export const usePropertiesStore = create<shapeProperties>((set) => ({
   properties: {

@@ -1,11 +1,11 @@
-import { TypeEnum, proptypes } from "../../shapeTypes";
+import { TypeEnum, proptypes } from "src/shapeTypes";
 import {
   useImageStore,
   usePropertiesStore,
   useSelectedShapeStore,
   useShapeStore,
-} from "../../store";
-import generateUUIDv4 from "../../utils/generateUuid";
+} from "src/store";
+import generateUUIDv4 from "src/utils/generateUuid";
 
 const AddShape = () => {
   const { properties, updateProperties } = usePropertiesStore();
