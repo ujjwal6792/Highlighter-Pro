@@ -151,32 +151,35 @@ const DoubleArrowLine: React.FC<ShapeProps> = ({
   borderStyle = "solid",
 }) => {
   const arrowLineStyle = {
-    width: "100%",
+    width: "90%",
     height: borderWidth,
     backgroundColor: fillColor,
-    borderWidth: "0",
+    borderWidth: borderWidth+"px",
     borderColor: borderColor,
-    borderRadius: borderRadius,
+    borderRadius: borderRadius + "px",
     borderStyle: borderStyle,
-    position: "relative",
   };
 
   const arrowStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "100%",
-    width: "4px",
-    height: "100%",
-    backgroundColor: fillColor,
+    top: '50%',
+    left: 0,
+    width: 0,
+    height: 0,
+    backgroundColor: "transparent",
+    borderTop: `${(4*Number(borderWidth)).toString()}px solid transparent `,
+    borderBottom: `${(4*Number(borderWidth)).toString()}px solid transparent`,
+    borderRight: `${(4*Number(borderWidth)).toString()}px solid  ${borderColor}`,
   };
 
   const secondArrowStyle = {
-    position: "absolute",
-    top: "50%",
-    right: "100%",
-    width: "4px",
-    height: "100%",
-    backgroundColor: fillColor,
+    top: '50%',
+    right: 0,
+    width: 0,
+    height: 0,
+    backgroundColor: "transparent",
+    borderTop: `${(4*Number(borderWidth)).toString()}px solid transparent `,
+    borderBottom: `${(4*Number(borderWidth)).toString()}px solid transparent`,
+    borderLeft: `${(4*Number(borderWidth)).toString()}px solid  ${borderColor}`,
   };
 
   return (
