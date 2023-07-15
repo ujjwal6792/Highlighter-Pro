@@ -1,5 +1,5 @@
-import ShapesHandler from "../shape";
-import { useImageStore } from "../../store";
+import ShapesHandler from "../shape/index";
+import { useImageStore } from "../../store/index";
 const CanvasSection = () => {
   const { imageData } = useImageStore();
   return (
