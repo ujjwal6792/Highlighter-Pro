@@ -1,4 +1,4 @@
-import ShapesHandler from "src/components/shape";
+import ShapesHandler from "src/components/shape/ShapesHandler";
 import { useImageStore } from "src/store";
 const CanvasSection = () => {
   const { imageData } = useImageStore();
