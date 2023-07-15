@@ -17,6 +17,7 @@ export const usePropertiesStore = create<shapeProperties>((set) => ({
     textPosition: TextPositionEnum.bottom,
     borderStyle: BorderStyleEnum.Solid,
     text: "",
+    rotation: 0,
   },
   updateProperties: (newProperties: Partial<proptypes>) => {
     set((state) => ({

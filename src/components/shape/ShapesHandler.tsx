@@ -14,12 +14,12 @@ import {
 } from "src/store/";
 
 const ShapesHandler = () => {
-  const { AddedShapes } = useShapeStore();
+  const { AddedShapes, updateShapeArray } = useShapeStore();
   const { id, setSelectedShape } = useSelectedShapeStore();
-  const { updateProperties } = usePropertiesStore();
-  const [rotationAngle, setRotationAngle] = useState(0);
-  const [showRotation, setShowRotation] = useState(false);
-  const [lastClickTime, setLastClickTime] = useState(0);
+  const { properties, updateProperties } = usePropertiesStore();
+  // const [rotationAngle, setRotationAngle] = useState(properties.rotation)
+  // const [showRotation, setShowRotation] = useState(false);
+  // const [lastClickTime, setLastClickTime] = useState(0);
   const longPressTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
   const incrementIntervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the interval ID
   const decrementIntervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the interval ID
@@ -49,12 +49,20 @@ const ShapesHandler = () => {
     clearInterval(decrementIntervalRef.current!);
   };
 
+  const setNewRotation = (rotation: number) => {
+    updateProperties({ rotation: rotation });
+    updateShapeArray({
+      id: id,
+      properties: { ...properties, rotation: rotation },
+    });
+  };
+
   const handleClockwiseRotation = () => {
-    setRotationAngle((prevAngle) => prevAngle + 1); // Increment rotation angle by 1 degree clockwise
+    setNewRotation(Number(properties.rotation) + 1); // Increment rotation angle by 1 degree clockwise
   };
 
   const handleAnticlockwiseRotation = () => {
-    setRotationAngle((prevAngle) => prevAngle - 1); // Decrement rotation angle by 1 degree anticlockwise
+    setNewRotation(Number(properties.rotation) - 1); // Decrement rotation angle by 1 degree anticlockwise
   };
 
   return (
@@ -69,26 +77,27 @@ const ShapesHandler = () => {
           textPosition,
           borderStyle,
           text,
+          rotation,
         } = shape.properties;
         return (
           <Rnd
             key={shape.id}
             onClick={() => {
-              const currentTime = new Date().getTime();
-              const clickTimeDiff = currentTime - lastClickTime;
-              const doubleClickThreshold = 300;
-              if (clickTimeDiff < doubleClickThreshold) {
+              // const currentTime = new Date().getTime();
+              // const clickTimeDiff = currentTime - lastClickTime;
+              // const doubleClickThreshold = 300;
+              // if (clickTimeDiff < doubleClickThreshold) {
                 // Double click detected
-                setShowRotation((o) => !o);
-                setLastClickTime(0);
-              } else {
+                // setShowRotation((o) => !o);
+                // setLastClickTime(0);
+              // } else {
                 // Single click detected
                 if (id !== shape.id) {
                   setSelectedShape(shape.id);
                   updateProperties(shape.properties);
                 }
-                setLastClickTime(currentTime);
-              }
+                // setLastClickTime(currentTime);
+              // }
             }}
             style={{ display: "flex" }}
             className={`justify-center p-1.5 items-center outline-[1.5px] hover:outline-dashed outline-fuchsia-800 rounded-md`}
@@ -111,7 +120,7 @@ const ShapesHandler = () => {
             lockAspectRatio={type === "rect" ? false : true}
             onMouseUp={handleMouseUp}
           >
-            {showRotation && shape.id === id && (
+            {/* {showRotation && shape.id === id && (
               <div className="absolute -bottom-12 flex gap-10">
                 <button
                   onMouseDown={() => handleMouseDown(handleClockwiseRotation)}
@@ -128,12 +137,12 @@ const ShapesHandler = () => {
                   Anticlockwise
                 </button>
               </div>
-            )}
+            )} */}
             <div
               className="w-full h-full relative flex justify-center items-center"
               style={{
-                transform: `rotate(${rotationAngle}deg)`,
-                transition: "transform 0.3s ease-in-out", 
+                transform: `rotate(${rotation}deg)`,
+                transition: "transform 0.3s ease-in-out",
               }}
             >
               {type === "square" ? (

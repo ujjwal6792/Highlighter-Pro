@@ -33,6 +33,7 @@ export interface proptypes {
   borderStyle: BorderStyleEnum;
   fillColor: string;
   dimension: number;
+  rotation: number;
 }
 
 export interface objectSize {

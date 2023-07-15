@@ -23,7 +23,7 @@ const ChangeShapeProperties = () => {
   const setNewProperties = (e: ChangeEvent | string, property: string) => {
     let value;
     if (typeof e !== "string" && e.target instanceof HTMLInputElement) {
-      value = e.target.value;
+      value = property === 'rotation'? Number(e.target.value): e.target.value;
     } else if (typeof e === "string") {
       value = e;
     }
@@ -69,6 +69,15 @@ const ChangeShapeProperties = () => {
           className="w-1/2 border shadow rounded-md px-2 py-1"
           onChange={(e) => setNewProperties(e, "borderWidth")}
           value={properties.borderWidth}
+          type="number"
+        />
+      </section>
+      <section className="flex justify-between my-3 items-center">
+        <h3 className="cursor-default select-none">Rotation</h3>
+        <input
+          className="w-1/2 border shadow rounded-md px-2 py-1"
+          onChange={(e) => setNewProperties(e, "rotation")}
+          value={properties.rotation}
           type="number"
         />
       </section>
