@@ -11,7 +11,10 @@ const ImageUploader: React.FC = () => {
       const reader = new FileReader();
       reader.onload = () => {
         if(typeof file.name === 'string'){
-          setName('highlighted-'+file.name);
+          const fileNameArray = file.name.split('.')
+          fileNameArray.length>0?fileNameArray.pop() : ''
+          const finalName = fileNameArray.join('')
+          setName('highlighted-'+finalName);
         }
         if (typeof reader.result === "string") {
           setImageData(reader.result);

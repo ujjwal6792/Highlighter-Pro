@@ -16,7 +16,7 @@ const Sidebar = () => {
         .toBlob(imageNode)
         .then((imageBlob: Blob | null) => {
           if (imageBlob) {
-            FileSaver.saveAs(imageBlob, name);
+            FileSaver.saveAs(imageBlob, name+'.png');
           } else {
             console.error("Failed to convert image to blob.");
           }
