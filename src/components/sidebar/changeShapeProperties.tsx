@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import {
+  useImageStore,
   usePropertiesStore,
   useSelectedShapeStore,
   useShapeStore,
@@ -19,6 +20,7 @@ const borderStyles = Object.keys(BorderStyleEnum);
 
 const ChangeShapeProperties = () => {
   const { properties, updateProperties } = usePropertiesStore();
+  const { imageData } = useImageStore();
   const [showColorPicker, setShowColorPicker] = useState({
     border: false,
     fill: false,
@@ -59,6 +61,7 @@ const ChangeShapeProperties = () => {
           onChange={(e) => setNewProperties(e, "borderColor")}
           value={properties.borderColor}
           type="text"
+          disabled={imageData.length === 0}
         />
         <span
           style={{ background: properties.borderColor }}
@@ -67,7 +70,7 @@ const ChangeShapeProperties = () => {
             setShowColorPicker((o) => ({ fill: false, border: !o.border }))
           }
         ></span>
-        {showColorPicker.border ? (
+        {showColorPicker.border && imageData.length !== 0 ? (
           <section className="absolute bottom-10 right-0">
             <HexColorPicker
               color={properties.borderColor}
@@ -88,6 +91,7 @@ const ChangeShapeProperties = () => {
           onChange={(e) => setNewProperties(e, "fillColor")}
           value={properties.fillColor}
           type="text"
+          disabled={imageData.length === 0}
         />
         <span
           style={{ background: properties.fillColor }}
@@ -96,7 +100,7 @@ const ChangeShapeProperties = () => {
             setShowColorPicker((o) => ({ border: false, fill: !o.fill }))
           }
         ></span>
-        {showColorPicker.fill ? (
+        {showColorPicker.fill && imageData.length !== 0 ? (
           <section className="absolute bottom-10 right-0">
             <HexColorPicker
               color={properties.fillColor}
@@ -114,6 +118,7 @@ const ChangeShapeProperties = () => {
           onChange={(e) => setNewProperties(e, "borderRadius")}
           value={properties.borderRadius}
           type="number"
+          disabled={imageData.length === 0}
         />
       </section>
       <section className="flex justify-between my-3 items-center">
@@ -123,6 +128,7 @@ const ChangeShapeProperties = () => {
           onChange={(e) => setNewProperties(e, "borderWidth")}
           value={properties.borderWidth}
           type="number"
+          disabled={imageData.length === 0}
         />
       </section>
       <section className="flex justify-between my-3 items-center">
@@ -132,12 +138,16 @@ const ChangeShapeProperties = () => {
           onChange={(e) => setNewProperties(e, "rotation")}
           value={properties.rotation}
           type="number"
+          disabled={imageData.length === 0}
         />
       </section>
       <section className="flex justify-between my-3 items-center">
         <h3 className="cursor-default select-none">Border Style</h3>
         <DropdownMenu>
-          <DropdownMenuTrigger className="w-1/2 border shadow bg-white rounded-md px-2 py-1 ">
+          <DropdownMenuTrigger
+            disabled={imageData.length === 0}
+            className="w-1/2 border shadow bg-white rounded-md px-2 py-1 "
+          >
             Current - {properties.borderStyle}
           </DropdownMenuTrigger>
           <DropdownMenuContent>
