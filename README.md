@@ -1,6 +1,6 @@
 # Highlighter Pro
 
-![Highlighter Pro](https://github.com/ujjwal6792/Highlighter-Pro/blob/main/src/assets/logo.png)
+![Highlighter Pro](https://github.com/ujjwal6792/Highlighter-Pro/blob/master/public/logo.svg)
 
 Highlighter Pro is an open-source tool that allows you to easily highlight and edit your images with box highlights, circle highlights, arrows, and text boxes. With Highlighter Pro, you can customize the color of borders, fills, text, and text boxes. The final edited image can be downloaded to your device completely offline.
 
