@@ -13,7 +13,7 @@ export const usePropertiesStore = create<shapeProperties>((set) => ({
     borderColor: "#E94434",
     borderWidth: "2",
     borderRadius: "0",
-    fillColor: "#00000000",
+    fillColor: "#ffffff00",
     textPosition: TextPositionEnum.bottom,
     borderStyle: BorderStyleEnum.Solid,
     text: "",
