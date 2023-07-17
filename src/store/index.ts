@@ -63,6 +63,20 @@ export const useImageNameStore = create<imageNameStore>((set) => ({
   }
 }))
 
+export const useImageInfoStore = create<imageInfoStore>((set) => ({
+  imageInfo: {
+    extension: "",
+    width: 0,
+    height:0,
+    size: 0,
+  },
+  updateImageInfo: (imageInfo: Partial<imageInfo>)=> {
+    set(state=> ({
+      imageInfo: {...state.imageInfo, ...imageInfo}
+    }));
+  }
+}))
+
 export const useSelectedShapeStore = create<selectedShapeId>((set) => ({
   id: "",
   setSelectedShape: (id: string) => {
@@ -97,4 +111,16 @@ interface imageStore {
 interface imageNameStore{
   name: string;
   setName: (name: string) => void;
+}
+
+type imageInfo = {
+  extension: string;
+  width: number;
+  height: number;
+  size: number;
+}
+
+interface imageInfoStore {
+  imageInfo: imageInfo
+  updateImageInfo: (imageInfo: Partial<imageInfo>) => void;
 }

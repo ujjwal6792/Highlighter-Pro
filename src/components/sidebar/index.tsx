@@ -3,20 +3,33 @@ import FileSaver from "file-saver";
 import ImageUploader from "src/components/sidebar/uploadimage";
 import AddShape from "src/components/sidebar/addShape";
 import ChangeShapeProperties from "src/components/sidebar/changeShapeProperties";
-import { useImageNameStore, useImageStore } from "src/store";
+import { useImageInfoStore, useImageNameStore, useImageStore } from "src/store";
 
 const Sidebar = () => {
   const { name, setName } = useImageNameStore();
   const { imageData, setImageData } = useImageStore();
+  const { imageInfo } = useImageInfoStore();
   const downloadImage = (): void => {
     const imageNode: HTMLElement | null =
       document.getElementById("image-holder");
     if (imageNode) {
+      const offsetWidth = imageNode.offsetWidth;
+      const scale =
+        typeof imageInfo.width === "number" && imageInfo.width > 0
+          ? imageInfo.width / offsetWidth
+          : 2;
       domtoimage
-        .toBlob(imageNode)
+        .toBlob(imageNode, {
+          width: imageNode.clientWidth * scale,
+          height: imageNode.clientHeight * scale,
+          style: {
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+          },
+        })
         .then((imageBlob: Blob | null) => {
           if (imageBlob) {
-            FileSaver.saveAs(imageBlob, name+'.png');
+            // FileSaver.saveAs(imageBlob, name+'.png');
           } else {
             console.error("Failed to convert image to blob.");
           }
