@@ -56,6 +56,13 @@ export const useImageStore = create<imageStore>((set) => ({
   },
 }));
 
+export const useImageNameStore = create<imageNameStore>((set) => ({
+  name: '',
+  setName: (name: string) => {
+    set({name})
+  }
+}))
+
 export const useSelectedShapeStore = create<selectedShapeId>((set) => ({
   id: "",
   setSelectedShape: (id: string) => {
@@ -85,4 +92,9 @@ export interface ShapeStore {
 interface imageStore {
   imageData: string;
   setImageData: (imageData: string) => void;
+}
+
+interface imageNameStore{
+  name: string;
+  setName: (name: string) => void;
 }

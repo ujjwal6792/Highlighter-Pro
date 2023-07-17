@@ -6,7 +6,7 @@ function App() {
   return (
     <div
       id="app"
-      className="flex h-screen w-screen bg-gray-200 overflow-hidden overscroll-none"
+      className="flex h-screen w-screen bg-gray-900 overflow-hidden overscroll-none"
     >
       <Sidebar />
       <CanvasSection />
