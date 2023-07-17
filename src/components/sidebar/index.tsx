@@ -3,11 +3,12 @@ import FileSaver from "file-saver";
 import ImageUploader from "src/components/sidebar/uploadimage";
 import AddShape from "src/components/sidebar/addShape";
 import ChangeShapeProperties from "src/components/sidebar/changeShapeProperties";
-import { useImageInfoStore, useImageNameStore, useImageStore } from "src/store";
+import { useImageInfoStore, useImageNameStore, useImageStore, useShapeStore } from "src/store";
 
 const Sidebar = () => {
   const { name, setName } = useImageNameStore();
   const { imageData, setImageData } = useImageStore();
+  const { clearShapeArray } = useShapeStore()
   const { imageInfo } = useImageInfoStore();
   const downloadImage = (): void => {
     const imageNode: HTMLElement | null =
@@ -29,7 +30,7 @@ const Sidebar = () => {
         })
         .then((imageBlob: Blob | null) => {
           if (imageBlob) {
-            // FileSaver.saveAs(imageBlob, name+'.png');
+            FileSaver.saveAs(imageBlob, name+'.png');
           } else {
             console.error("Failed to convert image to blob.");
           }
@@ -61,6 +62,7 @@ const Sidebar = () => {
             onClick={() => {
               setImageData("");
               setName("");
+              clearShapeArray()
             }}
           >
             Clear Image

@@ -10,7 +10,7 @@ export const usePropertiesStore = create<shapeProperties>((set) => ({
   properties: {
     type: TypeEnum.rect,
     dimension: 200,
-    borderColor: "#000000",
+    borderColor: "#E94434",
     borderWidth: "2",
     borderRadius: "0",
     fillColor: "#00000000",
@@ -31,6 +31,9 @@ export const usePropertiesStore = create<shapeProperties>((set) => ({
 
 export const useShapeStore = create<ShapeStore>((set) => ({
   AddedShapes: [],
+  clearShapeArray: () => {
+    set(() => ({ AddedShapes: [] }));
+  },
   updateShapeArray: (newShape: addedShapes) => {
     set((state) => {
       const stateArray = state.AddedShapes;
@@ -57,25 +60,25 @@ export const useImageStore = create<imageStore>((set) => ({
 }));
 
 export const useImageNameStore = create<imageNameStore>((set) => ({
-  name: '',
+  name: "",
   setName: (name: string) => {
-    set({name})
-  }
-}))
+    set({ name });
+  },
+}));
 
 export const useImageInfoStore = create<imageInfoStore>((set) => ({
   imageInfo: {
     extension: "",
     width: 0,
-    height:0,
+    height: 0,
     size: 0,
   },
-  updateImageInfo: (imageInfo: Partial<imageInfo>)=> {
-    set(state=> ({
-      imageInfo: {...state.imageInfo, ...imageInfo}
+  updateImageInfo: (imageInfo: Partial<imageInfo>) => {
+    set((state) => ({
+      imageInfo: { ...state.imageInfo, ...imageInfo },
     }));
-  }
-}))
+  },
+}));
 
 export const useSelectedShapeStore = create<selectedShapeId>((set) => ({
   id: "",
@@ -101,6 +104,7 @@ export interface shapeProperties {
 }
 export interface ShapeStore {
   AddedShapes: addedShapes[];
+  clearShapeArray: ()=> void;
   updateShapeArray: (newShape: addedShapes) => void;
 }
 interface imageStore {
@@ -108,7 +112,7 @@ interface imageStore {
   setImageData: (imageData: string) => void;
 }
 
-interface imageNameStore{
+interface imageNameStore {
   name: string;
   setName: (name: string) => void;
 }
@@ -118,9 +122,9 @@ type imageInfo = {
   width: number;
   height: number;
   size: number;
-}
+};
 
 interface imageInfoStore {
-  imageInfo: imageInfo
+  imageInfo: imageInfo;
   updateImageInfo: (imageInfo: Partial<imageInfo>) => void;
 }
