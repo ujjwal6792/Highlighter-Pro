@@ -3,6 +3,7 @@ import {
   Circle,
   Rectangle,
   SingleArrowLine,
+  DoubleArrowLine,
   Triangle,
   Line,
 } from "src/assets/shapesJsx";
@@ -172,6 +173,14 @@ const ShapesHandler = () => {
                 />
               ) : type === "line" ? (
                 <Line
+                  borderColor={borderColor}
+                  fillColor={fillColor}
+                  borderWidth={borderWidth}
+                  borderRadius={borderRadius}
+                  borderStyle={borderStyle}
+                />
+              ) : type === "bi-arrow" ? (
+                <DoubleArrowLine
                   borderColor={borderColor}
                   fillColor={fillColor}
                   borderWidth={borderWidth}

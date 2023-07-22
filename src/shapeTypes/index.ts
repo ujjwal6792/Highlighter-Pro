@@ -15,6 +15,7 @@ export enum TypeEnum {
   square = "square",
   line = "line",
   arrow = "arrow",
+  "bi-Arrow" = "bi-arrow",
   triangle = "triangle",
 }
 export enum BorderStyleEnum {
