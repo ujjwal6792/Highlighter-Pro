@@ -13,6 +13,7 @@ export enum TypeEnum {
   circle = "circle",
   eclipse = "eclipse",
   square = "square",
+  line = "line",
   arrow = "arrow",
   triangle = "triangle",
 }

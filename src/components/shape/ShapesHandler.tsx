@@ -4,6 +4,7 @@ import {
   Rectangle,
   SingleArrowLine,
   Triangle,
+  Line,
 } from "src/assets/shapesJsx";
 import {
   usePropertiesStore,
@@ -163,6 +164,14 @@ const ShapesHandler = () => {
                 />
               ) : type === "triangle" ? (
                 <Triangle
+                  borderColor={borderColor}
+                  fillColor={fillColor}
+                  borderWidth={borderWidth}
+                  borderRadius={borderRadius}
+                  borderStyle={borderStyle}
+                />
+              ) : type === "line" ? (
+                <Line
                   borderColor={borderColor}
                   fillColor={fillColor}
                   borderWidth={borderWidth}

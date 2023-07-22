@@ -107,11 +107,11 @@ const Line: React.FC<ShapeProps> = ({
 }) => {
   const lineStyle = {
     width: "100%",
-    height: borderWidth,
+    height: 0,
     backgroundColor: fillColor,
-    borderWidth: "0",
+    borderWidth: `${borderWidth}px`,
     borderColor: borderColor,
-    borderRadius: borderRadius,
+    borderRadius: `${borderRadius}px`,
     borderStyle: borderStyle,
   };
 
@@ -209,32 +209,4 @@ const DoubleArrowLine: React.FC<ShapeProps> = ({
   );
 };
 
-const Ellipse: React.FC<ShapeProps> = ({
-  fillColor = "transparent",
-  borderWidth = "2px",
-  borderColor = "black",
-  borderRadius = "50%",
-  borderStyle = "solid",
-}) => {
-  const ellipseStyle = {
-    width: "20px",
-    height: "10px",
-    backgroundColor: fillColor,
-    borderWidth: borderWidth,
-    borderColor: borderColor,
-    borderRadius: borderRadius,
-    borderStyle: borderStyle,
-  };
-
-  return <div style={ellipseStyle}></div>;
-};
-
-export {
-  Rectangle,
-  Circle,
-  Triangle,
-  Line,
-  SingleArrowLine,
-  DoubleArrowLine,
-  Ellipse,
-};
+export { Rectangle, Circle, Triangle, Line, SingleArrowLine, DoubleArrowLine };
