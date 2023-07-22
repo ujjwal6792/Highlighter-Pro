@@ -11,6 +11,7 @@ export enum TextPositionEnum {
 export enum TypeEnum {
   rect = "rect",
   circle = "circle",
+  eclipse = "eclipse",
   square = "square",
   arrow = "arrow",
   triangle = "triangle",

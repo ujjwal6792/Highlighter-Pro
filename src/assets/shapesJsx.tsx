@@ -10,27 +10,6 @@ interface ShapeProps {
   borderStyle?: string;
 }
 
-const Square: React.FC<ShapeProps> = ({
-  width = 100,
-  fillColor = "transparent",
-  borderWidth = "2",
-  borderColor = "black",
-  borderRadius = "0",
-  borderStyle = "solid",
-}) => {
-  const squareStyle = {
-    width: width,
-    aspectRatio: '1/1',
-    backgroundColor: fillColor,
-    borderWidth: borderWidth + "px",
-    borderColor: borderColor,
-    borderRadius: borderRadius+'px',
-    borderStyle: borderStyle,
-  };
-
-  return <div style={squareStyle}></div>;
-};
-
 const Rectangle: React.FC<ShapeProps> = ({
   fillColor = "transparent",
   borderWidth = "2",
@@ -42,9 +21,9 @@ const Rectangle: React.FC<ShapeProps> = ({
     width: "100%",
     height: "100%",
     backgroundColor: fillColor,
-    borderWidth: borderWidth+'px',
+    borderWidth: borderWidth + "px",
     borderColor: borderColor,
-    borderRadius: borderRadius+'px',
+    borderRadius: borderRadius + "px",
     borderStyle: borderStyle,
   };
 
@@ -52,18 +31,16 @@ const Rectangle: React.FC<ShapeProps> = ({
 };
 
 const Circle: React.FC<ShapeProps> = ({
-  width = 100,
-  height = 100,
   fillColor = "transparent",
   borderWidth = "2",
   borderColor = "black",
   borderStyle = "solid",
 }) => {
   const circleStyle = {
-    width: width,
-    height: height,
+    width: "100%",
+    height: "100%",
     backgroundColor: fillColor,
-    borderWidth: borderWidth+'px',
+    borderWidth: borderWidth + "px",
     borderColor: borderColor,
     borderRadius: "50%",
     borderStyle: borderStyle,
@@ -73,19 +50,52 @@ const Circle: React.FC<ShapeProps> = ({
 };
 
 const Triangle: React.FC<ShapeProps> = ({
-  borderWidth = "90%",
+  fillColor = "",
   borderColor = "black",
+  borderWidth = 0,
 }) => {
+  const sidesWidth = 30,
+    height = 90;
+
   const triangleStyle = {
     width: 0,
     height: 0,
+    top: "50%",
+    left: "50%",
+    transform: `translate(-50%, ${1.25 * Number(borderWidth)}px )`, // Center the fill-div inside the border-div
     backgroundColor: "transparent",
-    borderTop: `${(8*Number(borderWidth)).toString()}px solid transparent `,
-    borderBottom: `${(8*Number(borderWidth)).toString()}px solid transparent`,
-    borderRight: `${(8*Number(borderWidth)).toString()}px solid  ${borderColor}`,
+    borderRight: `${
+      sidesWidth + 0.125 * Number(borderWidth)
+    }px solid transparent `,
+    borderLeft: `${
+      sidesWidth + 0.125 * Number(borderWidth)
+    }px solid transparent`,
+    borderBottom: `${height}px solid ${fillColor}`,
+    zIndex: 10,
   };
 
-  return <div style={triangleStyle}></div>;
+  const triangleBorderStyle = {
+    width: 0,
+    height: 0,
+    backgroundColor: "transparent",
+    borderRight: `${sidesWidth + Number(borderWidth)}px solid transparent `,
+    borderLeft: `${sidesWidth + Number(borderWidth)}px solid transparent`,
+    borderBottom: `${height + 2 * Number(borderWidth)}px solid ${borderColor}`,
+    zIndex: 5,
+    clipPath: `polygon(0% 100%, 50% 0%, 100% 100%)`,
+  };
+
+  return (
+    <div
+      id="border-div"
+      style={{ position: "absolute", ...triangleBorderStyle }}
+    >
+      <div
+        id="fill-div"
+        style={{ position: "absolute", ...triangleStyle }}
+      ></div>
+    </div>
+  );
 };
 
 const Line: React.FC<ShapeProps> = ({
@@ -119,26 +129,31 @@ const SingleArrowLine: React.FC<ShapeProps> = ({
     width: "90%",
     height: borderWidth,
     backgroundColor: fillColor,
-    borderWidth: borderWidth+"px",
+    borderWidth: borderWidth + "px",
     borderColor: borderColor,
     borderRadius: borderRadius + "px",
     borderStyle: borderStyle,
   };
 
   const arrowStyle = {
-    top: '50%',
+    top: "50%",
     left: 0,
     width: 0,
     height: 0,
     backgroundColor: "transparent",
-    borderTop: `${(4*Number(borderWidth)).toString()}px solid transparent `,
-    borderBottom: `${(4*Number(borderWidth)).toString()}px solid transparent`,
-    borderRight: `${(4*Number(borderWidth)).toString()}px solid  ${borderColor}`,
+    borderTop: `${(4 * Number(borderWidth)).toString()}px solid transparent `,
+    borderBottom: `${(4 * Number(borderWidth)).toString()}px solid transparent`,
+    borderRight: `${(
+      4 * Number(borderWidth)
+    ).toString()}px solid  ${borderColor}`,
   };
 
   return (
     <div className="relative" style={arrowLineStyle}>
-      <div className="absolute -translate-y-1/2 -translate-x-1/2 " style={arrowStyle}></div>
+      <div
+        className="absolute -translate-y-1/2 -translate-x-1/2 "
+        style={arrowStyle}
+      ></div>
     </div>
   );
 };
@@ -154,32 +169,36 @@ const DoubleArrowLine: React.FC<ShapeProps> = ({
     width: "90%",
     height: borderWidth,
     backgroundColor: fillColor,
-    borderWidth: borderWidth+"px",
+    borderWidth: borderWidth + "px",
     borderColor: borderColor,
     borderRadius: borderRadius + "px",
     borderStyle: borderStyle,
   };
 
   const arrowStyle = {
-    top: '50%',
+    top: "50%",
     left: 0,
     width: 0,
     height: 0,
     backgroundColor: "transparent",
-    borderTop: `${(4*Number(borderWidth)).toString()}px solid transparent `,
-    borderBottom: `${(4*Number(borderWidth)).toString()}px solid transparent`,
-    borderRight: `${(4*Number(borderWidth)).toString()}px solid  ${borderColor}`,
+    borderTop: `${(4 * Number(borderWidth)).toString()}px solid transparent `,
+    borderBottom: `${(4 * Number(borderWidth)).toString()}px solid transparent`,
+    borderRight: `${(
+      4 * Number(borderWidth)
+    ).toString()}px solid  ${borderColor}`,
   };
 
   const secondArrowStyle = {
-    top: '50%',
+    top: "50%",
     right: 0,
     width: 0,
     height: 0,
     backgroundColor: "transparent",
-    borderTop: `${(4*Number(borderWidth)).toString()}px solid transparent `,
-    borderBottom: `${(4*Number(borderWidth)).toString()}px solid transparent`,
-    borderLeft: `${(4*Number(borderWidth)).toString()}px solid  ${borderColor}`,
+    borderTop: `${(4 * Number(borderWidth)).toString()}px solid transparent `,
+    borderBottom: `${(4 * Number(borderWidth)).toString()}px solid transparent`,
+    borderLeft: `${(
+      4 * Number(borderWidth)
+    ).toString()}px solid  ${borderColor}`,
   };
 
   return (
@@ -211,7 +230,6 @@ const Ellipse: React.FC<ShapeProps> = ({
 };
 
 export {
-  Square,
   Rectangle,
   Circle,
   Triangle,

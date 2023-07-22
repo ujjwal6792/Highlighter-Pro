@@ -3,7 +3,6 @@ import {
   Circle,
   Rectangle,
   SingleArrowLine,
-  Square,
   Triangle,
 } from "src/assets/shapesJsx";
 import {
@@ -86,16 +85,16 @@ const ShapesHandler = () => {
               // const clickTimeDiff = currentTime - lastClickTime;
               // const doubleClickThreshold = 300;
               // if (clickTimeDiff < doubleClickThreshold) {
-                // Double click detected
-                // setShowRotation((o) => !o);
-                // setLastClickTime(0);
+              // Double click detected
+              // setShowRotation((o) => !o);
+              // setLastClickTime(0);
               // } else {
-                // Single click detected
-                if (id !== shape.id) {
-                  setSelectedShape(shape.id);
-                  updateProperties(shape.properties);
-                }
-                // setLastClickTime(currentTime);
+              // Single click detected
+              if (id !== shape.id) {
+                setSelectedShape(shape.id);
+                updateProperties(shape.properties);
+              }
+              // setLastClickTime(currentTime);
               // }
             }}
             style={{ display: "flex" }}
@@ -104,7 +103,7 @@ const ShapesHandler = () => {
               x: 0,
               y: 0,
               width: 220,
-              height: type === "rect" ? 220 / 1.5 : 220,
+              height: type === "rect" || type === "eclipse" ? 220 / 1.5 : 220,
             }}
             enableResizing={{
               top: type === "rect",
@@ -116,7 +115,9 @@ const ShapesHandler = () => {
               bottomLeft: true,
               topLeft: true,
             }}
-            lockAspectRatio={type === "rect" ? false : true}
+            lockAspectRatio={
+              type === "rect" || type === "eclipse" ? false : true
+            }
             // onMouseUp={handleMouseUp}
           >
             {/* {showRotation && shape.id === id && (
@@ -144,20 +145,8 @@ const ShapesHandler = () => {
                 transition: "transform 0.3s ease-in-out",
               }}
             >
-              {type === "square" ? (
-                <Square
-                  height={200}
-                  width={200}
-                  borderColor={borderColor}
-                  fillColor={fillColor}
-                  borderWidth={borderWidth}
-                  borderRadius={borderRadius}
-                  borderStyle={borderStyle}
-                />
-              ) : type === "circle" ? (
+              {type === "circle" || type === "eclipse" ? (
                 <Circle
-                  height={200}
-                  width={200}
                   borderColor={borderColor}
                   fillColor={fillColor}
                   borderWidth={borderWidth}
